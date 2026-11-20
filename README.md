@@ -7,6 +7,9 @@
 三个角色（Analyst / Critic / Curator）在一张可配置的 DAG 上协作完成任务流，
 全程 trace 落盘、节点级可观测、断网可回放、结果可验证、回归可复现。
 
+**仓库地址**：https://github.com/QDX-oss/sales-agent-platform
+**一键克隆**：`git clone https://github.com/QDX-oss/sales-agent-platform.git`
+
 ---
 
 ## 一、与赛题六大核心能力的对应
