@@ -1,0 +1,6 @@
+{"type": "run", "run_id": "20261108T110613-e98742", "question": "并行测试", "source": "selftest", "tags": {}, "started_at": "2026-11-08T11:06:13.640", "trace_version": 1}
+{"type": "event", "seq": 1, "at": "2026-11-08T11:06:13.794", "event": "graph_node", "detail": {"node": "start", "agent": "", "status": "ok", "visit": 0, "started_ms": 0.0, "ended_ms": 150.5, "duration_ms": 150.5, "note": ""}}
+{"type": "event", "seq": 2, "at": "2026-11-08T11:06:13.948", "event": "graph_node", "detail": {"node": "left", "agent": "", "status": "ok", "visit": 0, "started_ms": 153.8, "ended_ms": 304.6, "duration_ms": 150.8, "note": ""}}
+{"type": "event", "seq": 3, "at": "2026-11-08T11:06:14.109", "event": "graph_node", "detail": {"node": "right", "agent": "", "status": "ok", "visit": 0, "started_ms": 314.8, "ended_ms": 465.7, "duration_ms": 150.9, "note": ""}}
+{"type": "event", "seq": 4, "at": "2026-11-08T11:06:14.262", "event": "graph_node", "detail": {"node": "join", "agent": "", "status": "ok", "visit": 0, "started_ms": 469.1, "ended_ms": 619.2, "duration_ms": 150.1, "note": ""}}
+{"type": "run_end", "run_id": "20261108T110613-e98742", "status": "ok", "started_at": "2026-11-08T11:06:13.640", "ended_at": "2026-11-08T11:06:14.265", "duration_ms": 625.1, "step_count": 0, "failed_steps": 0, "retry_count": 0, "tokens": {"in": 0, "out": 0}, "error": null}

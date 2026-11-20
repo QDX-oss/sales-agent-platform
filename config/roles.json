@@ -1,0 +1,4 @@
+{
+  "_说明": "角色卡外部覆盖。改 prompt_add / cannot_add 后重启服务即生效，不用动 Python。留空则使用 core/roles.py 里的默认值。不允许给没有工具的角色加工具（会直接报错）。",
+  "roles": {}
+}

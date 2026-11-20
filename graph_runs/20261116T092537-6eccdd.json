@@ -1,0 +1,332 @@
+{
+  "run_id": "20261116T092537-6eccdd",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:25:42.232",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2376.8,
+      "duration_ms": 2376.8,
+      "payload": {
+        "chars": 348,
+        "tools": [
+          "rank"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2400.7,
+      "ended_ms": 2465.4,
+      "duration_ms": 64.7,
+      "payload": {
+        "checked": 21,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2422.6,
+      "ended_ms": 3259.7,
+      "duration_ms": 837.1,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3346.4,
+      "ended_ms": 3375.1,
+      "duration_ms": 28.7,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3391.3,
+      "ended_ms": 4246.9,
+      "duration_ms": 855.6,
+      "payload": {
+        "chars": 69
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4261.0,
+      "ended_ms": 4281.9,
+      "duration_ms": 20.9,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "哪个省的利润率最高？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "哪个省的利润率最高？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      460663.0,
+      143906.0,
+      31.24,
+      859053.0,
+      264486.0,
+      30.79,
+      601271.0,
+      176591.0,
+      29.37,
+      562831.0,
+      162813.0,
+      28.93,
+      734981.0,
+      204345.0,
+      27.8,
+      1564475.0,
+      417025.0,
+      26.66,
+      176277.0,
+      46562.0,
+      26.41,
+      378525.0,
+      99479.0,
+      26.28,
+      269648.0,
+      70483.0,
+      26.14,
+      596515.0,
+      152605.0,
+      25.58
+    ],
+    "draft": "**结论：山东的利润率最高，为 31.24%。**\n\n依据（利润率排名前五）：\n\n| 排名 | 省份 | 销售额 | 利润 | 利润率 |\n|---|---|---|---|---|\n| 1 | 山东 | 460,663 | 143,906 | 31.24% |\n| 2 | 安徽 | 859,053 | 264,486 | 30.79% |\n| 3 | 上海 | 601,271 | 176,591 | 29.37% |\n| 4 | 云南 | 562,831 | 162,813 | 28.93% |\n| 5 | 山西 | 734,981 | 204,345 | 27.80% |\n\n说明：以上为全量数据（未限定日期、产品和渠道）的汇总结果。如需按月份、产品或渠道拆分查看，可以告诉我具体条件。",
+    "records": [
+      {
+        "name": "rank",
+        "output": "{\"按利润率排名（省份）\": [{\"省份\": \"山东\", \"销售额\": 460663, \"利润\": 143906, \"利润率\": 31.24}, {\"省份\": \"安徽\", \"销售额\": 859053, \"利润\": 264486, \"利润率\": 30.79}, {\"省份\": \"上海\", \"销售额\": 601271, \"利润\": 176591, \"利润率\": 29.37}, {\"省份\": \"云南\", \"销售额\": 562831, \"利润\": 162813, \"利润率\": 28.93}, {\"省份\": \"山西\", \"销售额\": 734981, \"利润\": 204345, \"利润率\": 27.8}, {\"省份\": \"重庆\", \"销售额\": 1564475, \"利润\": 417025, \"利润率\": 26.66}, {\"省份\": \"江西\", \"销售额\": 176277, \"利润\": 46562, \"利润率\": 26.41}, {\"省份\": \"河北\", \"销售额\": 378525, \"利润\": 99479, \"利润率\": 26.28}, {\"省份\": \"广西\", \"销售额\": 269648, \"利润\": 70483, \"利润率\": 26.14}, {\"省份\": \"湖北\", \"销售额\": 596515, \"利润\": 152605, \"利润率\": 25.58}]}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 21,
+      "supported": [
+        {
+          "raw": "31.24%",
+          "value": 31.24,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 31.24
+        },
+        {
+          "raw": "1",
+          "value": 1.0,
+          "kind": "number",
+          "ignored": null,
+          "derived": "460,663 / 859,053"
+        },
+        {
+          "raw": "460,663",
+          "value": 460663.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 460663.0
+        },
+        {
+          "raw": "143,906",
+          "value": 143906.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 143906.0
+        },
+        {
+          "raw": "31.24%",
+          "value": 31.24,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 31.24
+        },
+        {
+          "raw": "2",
+          "value": 2.0,
+          "kind": "number",
+          "ignored": null,
+          "derived": "460,663 / 264,486"
+        },
+        {
+          "raw": "859,053",
+          "value": 859053.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 859053.0
+        },
+        {
+          "raw": "264,486",
+          "value": 264486.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 264486.0
+        },
+        {
+          "raw": "30.79%",
+          "value": 30.79,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 30.79
+        },
+        {
+          "raw": "3",
+          "value": 3.0,
+          "kind": "number",
+          "ignored": null,
+          "derived": "460,663 / 143,906"
+        },
+        {
+          "raw": "601,271",
+          "value": 601271.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 601271.0
+        },
+        {
+          "raw": "176,591",
+          "value": 176591.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 176591.0
+        },
+        {
+          "raw": "29.37%",
+          "value": 29.37,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 29.37
+        },
+        {
+          "raw": "4",
+          "value": 4.0,
+          "kind": "number",
+          "ignored": null,
+          "derived": "859,053 / 204,345"
+        },
+        {
+          "raw": "562,831",
+          "value": 562831.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 562831.0
+        },
+        {
+          "raw": "162,813",
+          "value": 162813.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 162813.0
+        },
+        {
+          "raw": "28.93%",
+          "value": 28.93,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 28.93
+        },
+        {
+          "raw": "5",
+          "value": 5.0,
+          "kind": "number",
+          "ignored": null,
+          "derived": "460,663 / 99,479"
+        },
+        {
+          "raw": "734,981",
+          "value": 734981.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 734981.0
+        },
+        {
+          "raw": "204,345",
+          "value": 204345.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 204345.0
+        },
+        {
+          "raw": "27.80%",
+          "value": 27.8,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 27.8
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 30,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "山东利润率最高，为31.24%。其后依次是安徽30.79%、上海29.37%、云南28.93%、山西27.80%。以上为全量数据汇总结果。",
+    "final": "山东利润率最高，为31.24%。其后依次是安徽30.79%、上海29.37%、云南28.93%、山西27.80%。以上为全量数据汇总结果。",
+    "curated": true
+  }
+}

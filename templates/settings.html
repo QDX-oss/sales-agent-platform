@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>系统设置</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f4fa; color: #2b3a55; padding: 32px;
+        }
+        .wrap { max-width: 720px; margin: 0 auto; }
+        h1 { font-size: 22px; margin-bottom: 4px; }
+        .sub { color: #7b8ba5; font-size: 13px; margin-bottom: 24px; }
+        .sub a { color: #1e6fff; text-decoration: none; margin-right: 14px; }
+        .card {
+            background: #fff; border-radius: 10px; padding: 20px 24px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(30,60,120,.08);
+        }
+        .card h2 { font-size: 16px; margin-bottom: 14px; border-left: 4px solid #1e6fff; padding-left: 10px; }
+        .form-row { margin-bottom: 12px; }
+        .form-row label { display: block; font-size: 13px; color: #5a6b85; margin-bottom: 6px; }
+        .form-row input {
+            width: 100%; max-width: 320px; padding: 10px 12px; font-size: 14px;
+            border: 1px solid #d7e2f2; border-radius: 8px; outline: none;
+        }
+        .form-row input:focus { border-color: #1e6fff; }
+        .btn {
+            border: none; border-radius: 8px; padding: 10px 22px; font-size: 14px;
+            cursor: pointer; color: #fff; background: #1e6fff;
+        }
+        .btn:hover { opacity: .88; }
+        .btn-ghost { background: #eef3fb; color: #35618f; }
+        .msg { margin-top: 12px; font-size: 13px; display: none; padding: 8px 12px; border-radius: 6px; }
+        .msg-ok  { display: block; background: #e7f7ee; color: #1d7a46; }
+        .msg-err { display: block; background: #fdeceb; color: #c0392b; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border-bottom: 1px solid #eef2f8; padding: 8px 10px; text-align: left; }
+        th { background: #f7faff; color: #5a6b85; }
+        .empty-tip { color: #b0653a; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>系统设置</h1>
+    <div class="sub">
+        <a href="/admin" onclick="wbSwitch(event,'admin')">← 返回管理后台</a>
+        <a href="/orchestration" onclick="wbSwitch(event,'orchestration')">🔀 运行编排</a>
+        <a href="/" onclick="wbSwitch(event,'dashboard')">打开数据大屏 →</a>
+        <button class="btn btn-ghost" id="logout-btn" style="float:right;padding:6px 16px;">退出登录</button>
+    </div>
+
+    <!-- 修改密码 -->
+    <div class="card">
+        <h2>🔑 修改密码</h2>
+        <div class="form-row">
+            <label>当前密码</label>
+            <input type="password" id="cur" autocomplete="off">
+        </div>
+        <div class="form-row">
+            <label>新密码（至少 5 位）</label>
+            <input type="password" id="new1" autocomplete="off">
+        </div>
+        <div class="form-row">
+            <label>确认新密码</label>
+            <input type="password" id="new2" autocomplete="off">
+        </div>
+        <button class="btn" id="save-btn">保存新密码</button>
+        <div class="msg" id="pwd-msg"></div>
+    </div>
+
+    <!-- 访客记录 -->
+    <div class="card">
+        <h2>📋 访客记录（登录时间）</h2>
+        <div id="visits-box"></div>
+    </div>
+</div>
+
+<script>
+function showMsg(id, text, ok) {
+    var el = document.getElementById(id);
+    el.textContent = text;
+    el.className = "msg " + (ok ? "msg-ok" : "msg-err");
+}
+
+/* ---------- 修改密码 ---------- */
+document.getElementById("save-btn").onclick = function () {
+    var cur = document.getElementById("cur").value;
+    var n1 = document.getElementById("new1").value;
+    var n2 = document.getElementById("new2").value;
+    if (!cur) { showMsg("pwd-msg", "请输入当前密码", false); return; }
+    if (!n1) { showMsg("pwd-msg", "请输入新密码", false); return; }
+    if (n1 !== n2) { showMsg("pwd-msg", "两次输入的新密码不一致", false); return; }
+    this.disabled = true;
+    var self = this;
+    fetch("/api/admin/password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current: cur, new: n1 })
+    })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            self.disabled = false;
+            if (d.ok) {
+                showMsg("pwd-msg", d.message, true);
+                document.getElementById("cur").value = "";
+                document.getElementById("new1").value = "";
+                document.getElementById("new2").value = "";
+            } else showMsg("pwd-msg", d.error, false);
+        });
+};
+
+/* ---------- 访客记录 ---------- */
+fetch("/api/admin/visits").then(function (r) { return r.json(); }).then(function (d) {
+    var box = document.getElementById("visits-box");
+    if (!d.visits.length) {
+        box.innerHTML = '<div class="empty-tip">暂无访问记录。</div>';
+        return;
+    }
+    box.innerHTML = '<table><thead><tr><th>#</th><th>登录时间</th></tr></thead><tbody>' +
+        d.visits.map(function (t, i) {
+            return '<tr><td>' + (i + 1) + '</td><td>' + t + '</td></tr>';
+        }).join("") + '</tbody></table>';
+});
+
+/* ---------- 退出登录 ---------- */
+document.getElementById("logout-btn").onclick = function () {
+    fetch("/api/logout", { method: "POST" }).then(function () {
+        location.href = "/login";
+    });
+};
+</script>
+<script src="/static/js/shell-link.js"></script>
+</body>
+</html>

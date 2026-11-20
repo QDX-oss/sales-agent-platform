@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>销售数据分析大屏</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- 大屏容器：按 1920x1080 设计，JS 自动缩放适配屏幕 -->
+<div id="screen">
+
+    <!-- ===== 顶部标题栏 ===== -->
+    <header class="header">
+        <div class="header-time" id="header-time">--:--:--</div>
+        <h1 class="header-title">销售数据分析大屏</h1>
+        <div class="header-date" id="header-date">----年--月--日</div>
+        <!-- 管理后台入口：外壳内切 tab；独立打开时落 /admin 外壳，不新开窗口 -->
+        <a class="admin-entry" href="/admin" onclick="wbSwitch(event,'admin')">⚙ 管理后台</a>
+        <!-- 运行编排屏入口：与「⚙ 管理后台」同一套胶囊样式 -->
+        <a class="orch-entry" href="/orchestration" onclick="wbSwitch(event,'orchestration')">🔀 运行编排</a>
+        <!-- AI 数据分析师入口 -->
+        <span class="ai-entry" id="ai-entry">✨ AI 分析</span>
+    </header>
+
+    <!-- ===== 核心指标横带：六张 KPI 铺满整屏宽度，不挤在中栏里 ===== -->
+    <div class="kpi-row">
+        <div class="kpi"><div class="kpi-icon">💰</div>
+            <div><div class="kpi-num" id="kpi-sales">0</div><div class="kpi-label">总销售额(元)</div></div></div>
+        <div class="kpi"><div class="kpi-icon">📈</div>
+            <div><div class="kpi-num" id="kpi-profit">0</div><div class="kpi-label">总利润(元)</div></div></div>
+        <div class="kpi"><div class="kpi-icon">📦</div>
+            <div><div class="kpi-num" id="kpi-volume">0</div><div class="kpi-label">总销量(件)</div></div></div>
+        <div class="kpi"><div class="kpi-icon">🧾</div>
+            <div><div class="kpi-num" id="kpi-orders">0</div><div class="kpi-label">订单数(笔)</div></div></div>
+        <div class="kpi"><div class="kpi-icon">💳</div>
+            <div><div class="kpi-num" id="kpi-avg">0</div><div class="kpi-label">平均客单价(元)</div></div></div>
+        <div class="kpi"><div class="kpi-icon">🎯</div>
+            <div><div class="kpi-num" id="kpi-rate">0</div><div class="kpi-label">利润率(%)</div></div></div>
+    </div>
+
+    <!-- ===== 主体三栏 ===== -->
+    <main class="main">
+
+        <!-- 左栏：销售明细 / 地区占比 / 产品排行 -->
+        <section class="col">
+            <div class="card card-detail">
+                <h3 class="card-title">销售明细</h3>
+                <!-- 表头固定，列表内容自动轮播，鼠标悬停暂停 -->
+                <div class="detail-head">
+                    <span class="c-date">日期</span><span class="c-prov">省份</span>
+                    <span class="c-prod">产品</span><span class="c-ch">渠道</span>
+                    <span class="c-num">销量</span><span class="c-num">销售额</span>
+                </div>
+                <div class="detail-viewport">
+                    <div class="detail-scroll" id="detail-list"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">地区销售占比
+                    <!-- 图表类型动态切换按钮 -->
+                    <span class="toggle-btn" id="toggle-region">环形图</span>
+                </h3>
+                <div class="chart" id="chart-region"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">产品销售排行
+                    <span class="toggle-btn" id="toggle-product">横向条形</span>
+                </h3>
+                <div class="chart" id="chart-product"></div>
+            </div>
+        </section>
+
+        <!-- 中栏：中国地图 / 月度趋势 -->
+        <section class="col col-center">
+            <!-- 中国销售地图（涟漪特效） -->
+            <div class="card card-map">
+                <h3 class="card-title">全国销售分布地图</h3>
+                <div class="chart" id="chart-map"></div>
+            </div>
+
+            <!-- 月度趋势 -->
+            <div class="card">
+                <h3 class="card-title">月度销售趋势</h3>
+                <div class="chart" id="chart-month"></div>
+            </div>
+        </section>
+
+        <!-- 右栏：渠道占比 / 利润进度 / 地区热榜 -->
+        <section class="col">
+            <div class="card">
+                <h3 class="card-title">渠道销售占比</h3>
+                <div class="chart" id="chart-channel"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">利润进度（各地区利润贡献）</h3>
+                <div class="progress-list" id="profit-list"></div>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">地区销售热榜 TOP10</h3>
+                <div class="hot-list" id="hot-list"></div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- 无数据提示遮罩 -->
+<div id="empty-overlay" style="display:none">
+    <div class="empty-box">
+        <div class="empty-icon">📭</div>
+        <div class="empty-text">暂无数据</div>
+        <div class="empty-sub">数据文件不存在或已被删除，请到管理后台上传 CSV 文件</div>
+        <a class="empty-link" href="/admin" onclick="wbSwitch(event,'admin')">前往管理后台</a>
+    </div>
+</div>
+
+<!-- AI 数据分析师聊天面板 -->
+<div id="ai-panel" style="display:none">
+    <div class="ai-head">
+        <b>✨ 小张 · DeepSeek 数据分析师</b>
+        <span id="ai-close">✕</span>
+    </div>
+    <div class="ai-messages" id="ai-messages">
+        <div class="ai-msg ai-bot">你好！我是接入 DeepSeek 的数据分析师，可以问我任何关于当前销售数据的问题，比如"哪个省份销售额最高？"</div>
+    </div>
+    <div class="ai-input-row">
+        <input id="ai-input" placeholder="输入问题，回车发送..." />
+        <button id="ai-send">发送</button>
+    </div>
+</div>
+
+<script src="/static/js/echarts.min.js"></script>
+<script src="/static/js/ai.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/shell-link.js"></script>
+</body>
+</html>

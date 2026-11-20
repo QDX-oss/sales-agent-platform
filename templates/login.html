@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录 - 销售数据分析大屏</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            width: 100%; height: 100vh;
+            font-family: "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #dbeeff 0%, #eef7ff 50%, #cfe6ff 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-card {
+            width: 380px; background: #fff; border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(30, 111, 255, .25);
+            padding: 40px 36px; text-align: center;
+        }
+        .login-icon { font-size: 44px; margin-bottom: 10px; }
+        .login-title { font-size: 20px; font-weight: 700; color: #1e6fff; margin-bottom: 6px; }
+        .login-sub { font-size: 13px; color: #7b8ba5; margin-bottom: 26px; }
+        .login-input {
+            width: 100%; padding: 12px 14px; font-size: 15px;
+            border: 1px solid #d7e2f2; border-radius: 10px; outline: none;
+            text-align: center; letter-spacing: 6px; margin-bottom: 14px;
+        }
+        .login-input:focus { border-color: #1e6fff; box-shadow: 0 0 0 3px rgba(30,111,255,.12); }
+        .login-btn {
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            background: linear-gradient(90deg, #1e6fff, #3d9bff);
+            color: #fff; font-size: 15px; font-weight: 600; cursor: pointer;
+        }
+        .login-btn:disabled { opacity: .6; cursor: not-allowed; }
+        .login-msg { margin-top: 14px; font-size: 13px; color: #c0392b; min-height: 18px; }
+    </style>
+</head>
+<body>
+<div class="login-card">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">销售数据分析大屏</div>
+    <div class="login-sub">请输入访问密码</div>
+    <input class="login-input" id="pwd" type="password" placeholder="•••••"
+           autocomplete="off" autofocus>
+    <button class="login-btn" id="btn">进 入 大 屏</button>
+    <div class="login-msg" id="msg"></div>
+</div>
+
+<script>
+var pwd = document.getElementById("pwd");
+var btn = document.getElementById("btn");
+var msg = document.getElementById("msg");
+
+function doLogin() {
+    if (!pwd.value) { msg.textContent = "请输入密码"; return; }
+    btn.disabled = true;
+    msg.textContent = "";
+    fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: pwd.value })
+    })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            /* 外壳一体化后，登录页可能出现在 iframe 里（视图内会话过期时）。
+               在 iframe 里登录成功要把整个外壳带回大屏，避免外壳套外壳 */
+            if (d.ok) {
+                if (window.parent !== window) { window.parent.location.href = "/"; }
+                else { location.href = "/"; }
+            }
+            else { msg.textContent = d.error; btn.disabled = false; }
+        })
+        .catch(function () { msg.textContent = "网络错误，请重试"; btn.disabled = false; });
+}
+btn.onclick = doLogin;
+pwd.addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{"type": "run", "run_id": "FAILSAMPLE-20261110T170248", "question": "广东省的销售额是多少？", "source": "web", "tags": {}, "started_at": "2026-11-10T17:02:48.429", "trace_version": 1}
+{"type": "event", "seq": 1, "at": "2026-11-10T17:02:48.439", "event": "node_begin", "detail": {"node": "draft", "agent": "Analyst", "priority": 100, "visit": 1, "note": "节点开始执行"}}
+{"type": "event", "seq": 2, "at": "2026-11-10T17:02:48.441", "event": "draft_prompt", "detail": {"attempt": 0, "strategy": "", "injected_chars": 0, "injected": "", "messages": 1, "note": "首稿，无修正策略"}}
+{"type": "event", "seq": 3, "at": "2026-11-10T17:02:48.454", "event": "node_end", "detail": {"node": "draft", "agent": "Analyst", "note": "节点执行结束（结果如何见 graph_node）"}}
+{"type": "event", "seq": 4, "at": "2026-11-10T17:02:48.457", "event": "graph_node", "detail": {"node": "draft", "agent": "Analyst", "status": "error", "visit": 0, "started_ms": 0.0, "ended_ms": 18.0, "duration_ms": 18.0, "note": "取数出稿"}}
+{"type": "run_end", "run_id": "FAILSAMPLE-20261110T170248", "status": "failed", "started_at": "2026-11-10T17:02:48.429", "ended_at": "2026-11-10T17:02:48.460", "duration_ms": 31.1, "step_count": 0, "failed_steps": 0, "retry_count": 0, "tokens": {"in": 0, "out": 0}, "error": {"type": "NodeFailed", "message": "节点 draft 执行失败：AttributeError: 'StubbornLLM' object has no attribute 'bind_tools'"}}

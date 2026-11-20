@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>运行编排屏 · Agent 编排调度</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/orchestration.css">
+</head>
+<body>
+
+<!-- 与主大屏同一套 1920x1080 定版 + 同一套蓝 token，不另起一套视觉体系 -->
+<div id="screen" class="orch">
+
+    <header class="header">
+        <div class="header-time" id="orch-time">--:--:--</div>
+        <h1 class="header-title">Agent 编排调度 · 运行编排屏</h1>
+        <!-- 行业切换器（台账 W4-04）：换一份配置换一个行业，切换后角色与流程图整体更换 -->
+        <div class="industry-bar" id="industry-bar">
+            <label class="ind-label" for="industry-select">行业</label>
+            <select id="industry-select" class="ind-select" title="切换行业：数据、工具、角色卡、流程图整体更换，后端代码零改动"></select>
+            <span class="ind-roles" id="ind-roles"></span>
+        </div>
+        <a class="admin-entry" href="/" target="_self">← 返回数据大屏</a>
+        <div class="header-date" id="orch-date">----年--月--日</div>
+    </header>
+
+    <main class="orch-main">
+
+        <!-- ================= 左栏：队列与槽位 ================= -->
+        <section class="orch-col orch-left">
+            <div class="card orch-queue">
+                <h3 class="card-title">调度队列 · 按优先级抢槽</h3>
+                <div class="q-head">
+                    <span class="q-c-job">节点</span>
+                    <span class="q-c-pri">优先</span>
+                    <span class="q-c-slot">槽位</span>
+                    <span class="q-c-wait">排队</span>
+                    <span class="q-c-cost">耗时</span>
+                    <span class="q-c-st">结果</span>
+                </div>
+                <div class="q-body" id="q-body"></div>
+                <p class="orch-note" id="q-note"></p>
+            </div>
+
+            <div class="card orch-waves">
+                <h3 class="card-title">批次与槽位</h3>
+                <div class="wave-body" id="wave-body"></div>
+            </div>
+        </section>
+
+        <!-- ================= 中栏：任务图 ================= -->
+        <section class="orch-col orch-mid">
+            <div class="card orch-graph">
+                <h3 class="card-title">
+                    <span>任务图 · 按依赖分层</span>
+                    <span class="view-toggle" id="view-toggle">
+                        <button type="button" class="vt active" data-view="dag">DAG 图</button>
+                        <button type="button" class="vt" data-view="lane">分层列表</button>
+                    </span>
+                    <span class="legend" id="legend">
+                        <i class="lg lg-pending"></i>待跑
+                        <i class="lg lg-ok"></i>通过
+                        <i class="lg lg-fail"></i>打回
+                        <i class="lg lg-timeout"></i>超时
+                        <i class="lg lg-skip"></i>跳过
+                        <i class="lg lg-running"></i>进行中
+                        <i class="lg lg-retry"></i>重跑
+                    </span>
+                </h3>
+                <div class="graph-meta" id="graph-meta"></div>
+                <!-- 实时状态条：轮询是不是在跑、现在几个节点在跑 —— 先给结论再给图 -->
+                <div class="live-strip" id="live-strip"></div>
+                <div class="graph-stage" id="graph-stage">
+                    <div class="dag-wrap" id="dag-wrap"><div id="dag-canvas"></div></div>
+                    <div class="lane-wrap" id="lane-wrap" style="display:none"></div>
+                </div>
+                <div class="graph-foot" id="graph-foot"></div>
+            </div>
+
+            <div class="card orch-timeline">
+                <h3 class="card-title">运行时间线 · 谁在什么时候占了槽</h3>
+                <div class="tl-body" id="tl-body"></div>
+            </div>
+        </section>
+
+        <!-- ================= 右栏：降级 / 诊断 / 运行信息 ================= -->
+        <section class="orch-col orch-right">
+            <div class="card orch-credit">
+                <h3 class="card-title">降级与诊断账</h3>
+                <div class="credit-body" id="credit-body"></div>
+            </div>
+
+            <div class="card orch-run">
+                <h3 class="card-title">本次运行</h3>
+                <div class="run-body" id="run-body"></div>
+                <div class="run-picker">
+                    <select id="run-select"></select>
+                    <button type="button" id="run-refresh">刷新</button>
+                </div>
+                <!-- 回放这一遍（W3-05）：选中的 run 不必是正在跑的那一次。
+                     摊在现场最常问的是"刚才那次为什么失败"，所以单独给一个入口。 -->
+                <button type="button" class="run-replay" id="run-replay">
+                    回放这一遍
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 回放条（W3-05）：选中历史 run 就能把那一遍"倒带重演"。
+         拿到脚本后不再联网 —— 断网也能从头拖到尾，这是验收口径。 -->
+    <div class="replay-bar" id="replay-bar">
+        <button type="button" class="rp-btn rp-play" id="rp-play" title="播放 / 暂停">▶ 回放</button>
+        <span class="rp-time" id="rp-now">0.0s</span>
+        <div class="rp-track" id="rp-track">
+            <div class="rp-fill" id="rp-fill"></div>
+            <div class="rp-marks" id="rp-marks"></div>
+        </div>
+        <span class="rp-time" id="rp-total">0.0s</span>
+        <span class="rp-speed">
+            <button type="button" class="rp-sp active" data-speed="1">1×</button>
+            <button type="button" class="rp-sp" data-speed="4">4×</button>
+            <button type="button" class="rp-sp" data-speed="10">10×</button>
+        </span>
+        <span class="rp-state" id="rp-state">未回放</span>
+    </div>
+
+    <footer class="orch-foot" id="orch-foot"></footer>
+</div>
+
+<!-- 节点抽屉（W3-04）：点图上节点或分层卡片就滑出来，按需取这一节点的全部证据 -->
+<div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawer-mask" id="drawer-mask"></div>
+    <aside class="drawer-panel" role="dialog" aria-label="节点详情">
+        <header class="drawer-head">
+            <span class="drawer-title">节点详情</span>
+            <button type="button" class="drawer-close" id="drawer-close" aria-label="关闭">×</button>
+        </header>
+        <div class="drawer-body" id="drawer-body"></div>
+    </aside>
+</div>
+
+<script src="/static/js/echarts.min.js"></script>
+<script src="/static/js/orchestration.js"></script>
+</body>
+</html>

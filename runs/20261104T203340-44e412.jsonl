@@ -1,0 +1,11 @@
+{"type": "run", "run_id": "20261104T203340-44e412", "question": "并行测试", "source": "selftest", "tags": {}, "started_at": "2026-11-04T20:33:40.740", "trace_version": 1}
+{"type": "event", "seq": 1, "at": "2026-11-04T20:33:40.899", "event": "graph_node", "detail": {"node": "start", "agent": "", "status": "ok", "visit": 0, "started_ms": 0.0, "ended_ms": 150.3, "duration_ms": 150.3, "note": ""}}
+{"type": "event", "seq": 2, "at": "2026-11-04T20:33:40.909", "event": "graph_wave", "detail": {"nodes": ["left", "right"], "slots": 2, "order": ["left", "right"], "note": "互不依赖，同批进队列；按 priority 取槽位"}}
+{"type": "event", "seq": 3, "at": "2026-11-04T20:33:40.943", "event": "scheduler_start", "detail": {"job": "left", "priority": 0, "waited_ms": 0.1, "deadline_ms": null, "slot": "1/2", "note": "按优先级取到槽位"}}
+{"type": "event", "seq": 4, "at": "2026-11-04T20:33:41.005", "event": "scheduler_start", "detail": {"job": "right", "priority": 0, "waited_ms": 51.0, "deadline_ms": null, "slot": "2/2", "note": "按优先级取到槽位"}}
+{"type": "event", "seq": 5, "at": "2026-11-04T20:33:41.093", "event": "scheduler_done", "detail": {"job": "left", "status": "ok", "duration_ms": 173.0}}
+{"type": "event", "seq": 6, "at": "2026-11-04T20:33:41.183", "event": "scheduler_done", "detail": {"job": "right", "status": "ok", "duration_ms": 211.7}}
+{"type": "event", "seq": 7, "at": "2026-11-04T20:33:41.210", "event": "graph_node", "detail": {"node": "left", "agent": "", "status": "ok", "visit": 0, "started_ms": 171.3, "ended_ms": 344.4, "duration_ms": 173.1, "note": ""}}
+{"type": "event", "seq": 8, "at": "2026-11-04T20:33:41.226", "event": "graph_node", "detail": {"node": "right", "agent": "", "status": "ok", "visit": 0, "started_ms": 222.2, "ended_ms": 434.0, "duration_ms": 211.8, "note": ""}}
+{"type": "event", "seq": 9, "at": "2026-11-04T20:33:41.388", "event": "graph_node", "detail": {"node": "join", "agent": "", "status": "ok", "visit": 0, "started_ms": 489.2, "ended_ms": 639.6, "duration_ms": 150.4, "note": ""}}
+{"type": "run_end", "run_id": "20261104T203340-44e412", "status": "ok", "started_at": "2026-11-04T20:33:40.740", "ended_at": "2026-11-04T20:33:41.423", "duration_ms": 682.4, "step_count": 0, "failed_steps": 0, "retry_count": 0, "tokens": {"in": 0, "out": 0}, "error": null}

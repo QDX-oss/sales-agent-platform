@@ -1,0 +1,218 @@
+{
+  "run_id": "20261116T205421-6929a1",
+  "graph": "service.answer",
+  "version": 1,
+  "updated_at": "2026-11-16T20:54:25.967",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "答复草拟",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2102.7,
+      "duration_ms": 2102.7,
+      "payload": {
+        "chars": 137,
+        "tools": [
+          "rank"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2132.0,
+      "ended_ms": 2146.3,
+      "duration_ms": 14.3,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语气质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2136.8,
+      "ended_ms": 3140.3,
+      "duration_ms": 1003.5,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3196.8,
+      "ended_ms": 3200.2,
+      "duration_ms": 3.4,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "答复定稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3208.6,
+      "ended_ms": 4283.5,
+      "duration_ms": 1074.9,
+      "payload": {
+        "chars": 75
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate"
+  ],
+  "state": {
+    "question": "哪个问题类型的工单量最多？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "哪个问题类型的工单量最多？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      4434.0,
+      3728.0,
+      3445.0,
+      2325.0,
+      1826.0
+    ],
+    "draft": "结论：工单量最多的问题类型是「物流查询」，共 4434 单。\n\n依据：按问题类型统计的工单量前五名如下：\n1. 物流查询 4434\n2. 退换货 3728\n3. 商品咨询 3445\n4. 售后维修 2325\n5. 投诉 1826\n\n如需按渠道或产品线进一步拆分，可以告诉我。",
+    "records": [
+      {
+        "name": "rank",
+        "output": "{\"按工单量排名（问题类型）\": [{\"问题类型\": \"物流查询\", \"工单量\": 4434}, {\"问题类型\": \"退换货\", \"工单量\": 3728}, {\"问题类型\": \"商品咨询\", \"工单量\": 3445}, {\"问题类型\": \"售后维修\", \"工单量\": 2325}, {\"问题类型\": \"投诉\", \"工单量\": 1826}]}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "4434",
+          "value": 4434.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 4434.0
+        },
+        {
+          "raw": "4434",
+          "value": 4434.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 4434.0
+        },
+        {
+          "raw": "3728",
+          "value": 3728.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3728.0
+        },
+        {
+          "raw": "3445",
+          "value": 3445.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3445.0
+        },
+        {
+          "raw": "2325",
+          "value": 2325.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 2325.0
+        },
+        {
+          "raw": "1826",
+          "value": 1826.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1826.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [
+        {
+          "raw": "1",
+          "value": 1.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "2",
+          "value": 2.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "3",
+          "value": 3.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "4",
+          "value": 4.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "5",
+          "value": 5.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        }
+      ],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "工单量最多的问题是「物流查询」，共 4434 单。其后依次为退换货 3728 单、商品咨询 3445 单、售后维修 2325 单、投诉 1826 单。",
+    "final": "",
+    "curated": false
+  }
+}

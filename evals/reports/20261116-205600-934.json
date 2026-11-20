@@ -1,0 +1,57 @@
+{
+  "task": "W4-02",
+  "at": "2026-11-16T20:56:00",
+  "stamp": "20261116-205600-934",
+  "meta": {
+    "cases": "C:\\Users\\21679\\Desktop\\销售数据分析大屏\\evals\\cases.yaml",
+    "label": "",
+    "max_retry": 1,
+    "suite_name": "",
+    "suite_version": 1,
+    "industry": "sales",
+    "canned": false,
+    "model": "deepseek"
+  },
+  "summary": {
+    "cases_total": 1,
+    "total": 1,
+    "pending": 0,
+    "passed": 1,
+    "failed": 0,
+    "rate": 100.0,
+    "avg_ms": 4106.1,
+    "max_ms": 4106.1,
+    "avg_tokens": 2752.0,
+    "total_tokens": 2752
+  },
+  "failed_ids": [],
+  "pending_ids": [],
+  "rows": [
+    {
+      "id": "E01",
+      "question": "广东省的销售额是多少？",
+      "ok": true,
+      "reason": "找到 1235074.0",
+      "expect_type": "exact",
+      "difficulty": "normal",
+      "group": "main",
+      "trap": null,
+      "pending": false,
+      "answer": "广东省销售额为 1,235,074 元。全量数据中广东省共 17 条记录，销量 4,064，利润 257,874 元，利润率 20.88%。",
+      "duration_ms": 4106.1,
+      "wall_ms": 5345.9,
+      "tokens": {
+        "in": 2610,
+        "out": 142,
+        "total": 2752
+      },
+      "run_id": "20261116T205555-20525a",
+      "team_passed": true,
+      "retries": 0,
+      "handoff": false,
+      "model": "deepseek",
+      "error": null
+    }
+  ],
+  "elapsed_ms": 5346.0
+}

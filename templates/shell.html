@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>销售数据分析大屏 · 一体化控制台</title>
+    <style>
+        /* 外壳只管切换，不碰任何子界面的视觉体系：
+           子界面各自保留自己的 1920 定版、等比缩放与蓝 token */
+        html, body { margin: 0; padding: 0; height: 100%; overflow: hidden;
+                     background: #04102a; font-family: "Microsoft YaHei", sans-serif; }
+        #shell-nav { height: 42px; display: flex; align-items: stretch;
+                     background: linear-gradient(180deg, #0a1a3a, #071230);
+                     border-bottom: 1px solid rgba(30,111,255,.45); user-select: none; }
+        #shell-nav .brand { display: flex; align-items: center; padding: 0 18px;
+                     color: #6fb3ff; font-size: 14px; letter-spacing: 2px; font-weight: bold; }
+        #shell-nav .tabs { display: flex; flex: 1; }
+        #shell-nav .tab { display: flex; align-items: center; padding: 0 26px;
+                     color: #7d9cc8; font-size: 14px; cursor: pointer; border: none;
+                     background: none; font-family: inherit; transition: all .15s; }
+        #shell-nav .tab:hover { color: #a8ccff; }
+        #shell-nav .tab.active { color: #fff; background: rgba(30,111,255,.22);
+                     box-shadow: inset 0 -2px 0 #1e6fff; }
+        #shell-views { position: absolute; top: 42px; left: 0; right: 0; bottom: 0; }
+        #shell-views iframe { position: absolute; inset: 0; width: 100%; height: 100%;
+                     border: none; display: none; background: #04102a; }
+        #shell-views iframe.visible { display: block; }
+    </style>
+</head>
+<body>
+<!-- 顶部导航：四个界面共用一条，切换不新开任何窗口 -->
+<nav id="shell-nav">
+    <div class="brand">◈ 控制台</div>
+    <div class="tabs">
+        <button class="tab" data-view="dashboard">📊 数据大屏</button>
+        <button class="tab" data-view="orchestration">🔀 运行编排</button>
+        <button class="tab" data-view="admin">⚙ 管理后台</button>
+        <button class="tab" data-view="settings">🛠 系统设置</button>
+    </div>
+</nav>
+<div id="shell-views"></div>
+
+<script>
+(function () {
+    "use strict";
+    /* 视图路径表：/view/* 只出页面本身，不带导航条；数据仍由受保护接口提供 */
+    var VIEW_PATH = {
+        dashboard: "/view/dashboard",
+        orchestration: "/view/orchestration",
+        admin: "/view/admin",
+        settings: "/view/settings"
+    };
+    /* 路径反查表：iframe 自己跳转（如退出登录）时同步导航条高亮 */
+    var PATH_VIEW = {
+        "/": "dashboard", "/view/dashboard": "dashboard",
+        "/orchestration": "orchestration", "/view/orchestration": "orchestration",
+        "/admin": "admin", "/view/admin": "admin",
+        "/settings": "settings", "/view/settings": "settings"
+    };
+
+    var viewsEl = document.getElementById("shell-views");
+    var tabs = Array.prototype.slice.call(document.querySelectorAll("#shell-nav .tab"));
+    /* 已创建的 iframe 惰性保留：切走再切回来，编排屏的实时轮询不中断 */
+    var created = {};
+    var current = null;
+
+    function setActive(view) {
+        tabs.forEach(function (t) {
+            t.classList.toggle("active", t.dataset.view === view);
+        });
+    }
+
+    function show(view) {
+        if (!VIEW_PATH[view] || view === current) { return; }
+        current = view;
+        setActive(view);
+        if (!created[view]) {
+            var f = document.createElement("iframe");
+            f.src = VIEW_PATH[view];
+            f.dataset.view = view;
+            f.addEventListener("load", function () {
+                /* iframe 内部自己跳了页（如登出后跳 /login）时，同步导航条；
+                   登录页在 iframe 里登录成功后会把整个外壳带回到大屏 */
+                try {
+                    var p = f.contentWindow.location.pathname;
+                    var v = PATH_VIEW[p];
+                    if (v && v !== current) { show(v); }
+                } catch (e) { /* 跨域时忽略（本项目同源，不会发生） */ }
+            });
+            viewsEl.appendChild(f);
+            created[view] = f;
+        } else {
+            Array.prototype.forEach.call(viewsEl.children, function (el) {
+                el.classList.toggle("visible", el === created[view]);
+            });
+            return;
+        }
+        Array.prototype.forEach.call(viewsEl.children, function (el) {
+            el.classList.toggle("visible", el === created[view]);
+        });
+    }
+
+    tabs.forEach(function (t) {
+        t.addEventListener("click", function () { show(t.dataset.view); });
+    });
+
+    /* 子界面的跳转入口（原 target="_blank" 链接）统一走这条消息：
+       编排屏/后台/设置里点"去大屏"等，都变成外壳内切 tab，不新开界面 */
+    window.addEventListener("message", function (ev) {
+        if (ev.data && typeof ev.data.wbSwitch === "string") {
+            show(ev.data.wbSwitch);
+        }
+    });
+
+    /* 初始视图由后端注入（直接访问 /、/orchestration、/admin、/settings
+       都落到外壳，各自带初始 tab，老书签行为不变） */
+    show("{{ view }}");
+})();
+</script>
+</body>
+</html>

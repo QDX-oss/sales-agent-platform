@@ -1,0 +1,181 @@
+{
+  "run_id": "20261107T102929-2077ce",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-07T10:29:29.746",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 20.4,
+      "duration_ms": 20.4,
+      "payload": {
+        "chars": 44,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 31.3,
+      "ended_ms": 36.9,
+      "duration_ms": 5.6,
+      "payload": {
+        "checked": 3,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 37.0,
+      "ended_ms": 47.0,
+      "duration_ms": 10.0,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 71.9,
+      "ended_ms": 71.9,
+      "duration_ms": 0.0,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 79.8,
+      "ended_ms": 83.1,
+      "duration_ms": 3.3,
+      "payload": {
+        "chars": 44
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 90.5,
+      "ended_ms": 90.6,
+      "duration_ms": 0.1,
+      "payload": {
+        "checked": 3
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东省的销售额是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东省的销售额是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      17.0,
+      4064.0,
+      1235074.0,
+      257874.0,
+      20.88
+    ],
+    "draft": "广东省销售额 1235074.0 元，利润 257874.0 元，利润率 20.88%。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"广东\", \"product\": \"\", \"channel\": \"\"}, \"统计\": {\"订单数\": 17, \"销量\": 4064, \"销售额\": 1235074.0, \"利润\": 257874.0, \"利润率\": 20.88}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 3,
+      "supported": [
+        {
+          "raw": "1235074.0",
+          "value": 1235074.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1235074.0
+        },
+        {
+          "raw": "257874.0",
+          "value": 257874.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 257874.0
+        },
+        {
+          "raw": "20.88%",
+          "value": 20.88,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 20.88
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "广东省销售额 1235074.0 元，利润 257874.0 元，利润率 20.88%。",
+    "final": "广东省销售额 1235074.0 元，利润 257874.0 元，利润率 20.88%。",
+    "curated": true
+  }
+}

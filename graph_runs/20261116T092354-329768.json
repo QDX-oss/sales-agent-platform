@@ -1,0 +1,192 @@
+{
+  "run_id": "20261116T092354-329768",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:23:54.618",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 1,
+      "started_ms": 68.7,
+      "ended_ms": 73.1,
+      "duration_ms": 4.4,
+      "payload": {
+        "chars": 30,
+        "tools": [],
+        "strategy": "refetch"
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 77.8,
+      "ended_ms": 82.7,
+      "duration_ms": 4.9,
+      "payload": {
+        "checked": 2,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 80.4,
+      "ended_ms": 85.6,
+      "duration_ms": 5.2,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 93.2,
+      "ended_ms": 94.5,
+      "duration_ms": 1.3,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 98.3,
+      "ended_ms": 100.4,
+      "duration_ms": 2.1,
+      "payload": {
+        "chars": 30
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 103.9,
+      "ended_ms": 105.0,
+      "duration_ms": 1.1,
+      "payload": {
+        "checked": 2
+      }
+    }
+  },
+  "visits": {
+    "draft": 1
+  },
+  "loops": {
+    "gate->draft": 1
+  },
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东省销售额是多少",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东省销售额是多少"
+      },
+      {
+        "role": "assistant",
+        "content": "广东省销售额 999 万元，利润率 45%，建议尽快降价冲量。"
+      },
+      {
+        "role": "user",
+        "content": "【第 1 次重做 · 诊断：取数错】\n判定依据：质检指出回答里有找不到出处的数字，这一条只能靠重新取数解决\n  · 质检：999 万不在工具返回里\n本轮做法：上一轮的取数与结论对不上，本轮必须重新调用查询工具：换一个条件重取（例如换维度、换时间范围、换聚合方式），拿新返回的数字重写结论。不许沿用上一轮的任何数字。\n本轮禁止：不许凭记忆复述上一轮的结果；没有工具返回的数字一律不许出现在回答里。\n\n你上一条回答里有数字在本次工具返回结果中找不到出处：「999 万」（本次工具返回过最接近的是 1,235,074）；「45%」（本次工具返回过最接近的是 20.88）。请只使用工具真实返回的数值重新作答；如果某个数是你自己算出来的，请先调用工具拿到原始数据再计算，并在文中说明它由哪两个数算出。不要保留任何无法溯源的数字。\n质检员打回了这一稿：999 万不在工具返回里（无据数字）。改法：改成有出处的数\n请按上述意见重新作答，不要重复上一稿的问题。"
+      }
+    ],
+    "attempt": 1,
+    "evidence": [
+      17.0,
+      4064.0,
+      1235074.0,
+      257874.0,
+      20.88
+    ],
+    "draft": "广东省销售额 1235074.0 元，利润率 20.88%。",
+    "records": [],
+    "verdict": {
+      "passed": true,
+      "checked": 2,
+      "supported": [
+        {
+          "raw": "1235074.0",
+          "value": 1235074.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1235074.0
+        },
+        {
+          "raw": "20.88%",
+          "value": 20.88,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 20.88
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [
+      {
+        "kind": "fetch",
+        "label": "取数错",
+        "strategy": "refetch",
+        "why": "质检指出回答里有找不到出处的数字，这一条只能靠重新取数解决",
+        "signals": [
+          "质检：999 万不在工具返回里"
+        ],
+        "instruction": "上一轮的取数与结论对不上，本轮必须重新调用查询工具：换一个条件重取（例如换维度、换时间范围、换聚合方式），拿新返回的数字重写结论。不许沿用上一轮的任何数字。",
+        "forbid": "不许凭记忆复述上一轮的结果；没有工具返回的数字一律不许出现在回答里。",
+        "attempt": 1
+      }
+    ],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "广东省销售额 1235074.0 元，利润率 20.88%。",
+    "final": "广东省销售额 1235074.0 元，利润率 20.88%。",
+    "curated": true
+  }
+}

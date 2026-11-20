@@ -1,0 +1,187 @@
+{
+  "run_id": "20261116T205231-ad8b93",
+  "graph": "service.answer",
+  "version": 1,
+  "updated_at": "2026-11-16T20:52:37.182",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "答复草拟",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2407.5,
+      "duration_ms": 2407.5,
+      "payload": {
+        "chars": 116,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2430.4,
+      "ended_ms": 2441.9,
+      "duration_ms": 11.5,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语气质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2434.0,
+      "ended_ms": 3258.6,
+      "duration_ms": 824.6,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3295.0,
+      "ended_ms": 3297.3,
+      "duration_ms": 2.3,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "答复定稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3304.7,
+      "ended_ms": 4229.7,
+      "duration_ms": 925.0,
+      "payload": {
+        "chars": 81
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate"
+  ],
+  "state": {
+    "question": "电话渠道的工单量是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "电话渠道的工单量是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      94.0,
+      5057.0,
+      54113.0,
+      3084.0,
+      60.98
+    ],
+    "draft": "电话渠道工单量为 **5057 单**（全时段汇总）。\n\n依据：按渠道=电话查询，共 94 条记录，工单量 5057，处理时长合计 54113，一次解决 3084，一次解决率 60.98%。\n\n如需按月份或问题类型细分，可以告诉我。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"channel\": \"电话\"}, \"统计\": {\"记录数\": 94, \"工单量\": 5057, \"处理时长\": 54113, \"一次解决\": 3084, \"一次解决率\": 60.98}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "5057",
+          "value": 5057.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 5057.0
+        },
+        {
+          "raw": "94",
+          "value": 94.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 94.0
+        },
+        {
+          "raw": "5057",
+          "value": 5057.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 5057.0
+        },
+        {
+          "raw": "54113",
+          "value": 54113.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 54113.0
+        },
+        {
+          "raw": "3084",
+          "value": 3084.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3084.0
+        },
+        {
+          "raw": "60.98%",
+          "value": 60.98,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 60.98
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "电话渠道工单量为5057单。按渠道为电话查询共94条记录，处理时长合计54113，一次解决3084，一次解决率60.98%。如需按月份或问题类型细分，可以告诉我。",
+    "final": "",
+    "curated": false
+  }
+}

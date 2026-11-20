@@ -1,0 +1,230 @@
+{
+  "run_id": "20261116T092529-e37fad",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:25:33.801",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2019.7,
+      "duration_ms": 2019.7,
+      "payload": {
+        "chars": 120,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2048.2,
+      "ended_ms": 2142.4,
+      "duration_ms": 94.2,
+      "payload": {
+        "checked": 7,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2074.9,
+      "ended_ms": 3016.8,
+      "duration_ms": 941.9,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3083.2,
+      "ended_ms": 3103.9,
+      "duration_ms": 20.7,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3118.0,
+      "ended_ms": 4042.0,
+      "duration_ms": 924.0,
+      "payload": {
+        "chars": 75
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4055.3,
+      "ended_ms": 4076.1,
+      "duration_ms": 20.8,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "2025 年 11 月全国的销售额是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "2025 年 11 月全国的销售额是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      2025.0,
+      11.0,
+      25.0,
+      5966.0,
+      1438093.0,
+      329886.0,
+      22.94
+    ],
+    "draft": "结论：2025 年 11 月全国销售额为 1,438,093 元。\n\n依据（2025-11 全量数据）：\n- 销售额：1,438,093 元\n- 销量：5,966 件\n- 订单数：25 单\n- 利润：329,886 元，利润率 22.94%",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"2025-11\", \"province\": \"\", \"product\": \"\", \"channel\": \"\"}, \"统计\": {\"订单数\": 25, \"销量\": 5966, \"销售额\": 1438093.0, \"利润\": 329886.0, \"利润率\": 22.94}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 7,
+      "supported": [
+        {
+          "raw": "1,438,093",
+          "value": 1438093.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1438093.0
+        },
+        {
+          "raw": "11",
+          "value": 11.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 11.0
+        },
+        {
+          "raw": "1,438,093",
+          "value": 1438093.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1438093.0
+        },
+        {
+          "raw": "5,966",
+          "value": 5966.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 5966.0
+        },
+        {
+          "raw": "25",
+          "value": 25.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 25.0
+        },
+        {
+          "raw": "329,886",
+          "value": 329886.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 329886.0
+        },
+        {
+          "raw": "22.94%",
+          "value": 22.94,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 22.94
+        }
+      ],
+      "unsupported": [],
+      "ignored": [
+        {
+          "raw": "2025",
+          "value": 2025.0,
+          "kind": "number",
+          "ignored": "时间"
+        },
+        {
+          "raw": "11",
+          "value": 11.0,
+          "kind": "number",
+          "ignored": "时间"
+        },
+        {
+          "raw": "2025",
+          "value": 2025.0,
+          "kind": "number",
+          "ignored": "年份"
+        }
+      ],
+      "evidence_count": 7,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "2025 年 11 月全国销售额为 1,438,093 元，对应销量 5,966 件、订单 25 单，利润 329,886 元，利润率 22.94%。",
+    "final": "2025 年 11 月全国销售额为 1,438,093 元，对应销量 5,966 件、订单 25 单，利润 329,886 元，利润率 22.94%。",
+    "curated": true
+  }
+}

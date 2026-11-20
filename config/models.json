@@ -1,0 +1,38 @@
+{
+  "_说明": "模型通道链（台账 W2-02）。数组顺序 = 尝试顺序：前一个连续失败 fail_threshold 次即判定不可用（跳闸），后续请求直接跳过它，冷却 cooldown_s 秒后重新允许尝试。key_file 指向项目根目录下的文本文件；文件不存在则该通道被跳过，并在 trace 里留一条 channel_unavailable —— 备用通道没配等于没有备用，这件事必须留痕。改这个文件不用动 Python，改完重启服务生效。",
+  "fail_threshold": 1,
+  "cooldown_s": 300,
+  "channels": [
+    {
+      "name": "deepseek",
+      "provider": "openai",
+      "model": "deepseek-chat",
+      "base_url": "https://api.deepseek.com/v1",
+      "key_file": "ai_key.txt",
+      "temperature": 0.2,
+      "timeout_s": 20,
+      "_备注": "主通道。现场把 ai_key.txt 写错即可复现降级。"
+    },
+    {
+      "name": "siliconflow",
+      "provider": "openai",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "base_url": "https://api.siliconflow.cn/v1",
+      "key_file": "ai_key_backup.txt",
+      "temperature": 0.2,
+      "timeout_s": 20,
+      "_备注": "备用一。需要 ai_key_backup.txt；没有该文件时该槽位被跳过。"
+    },
+    {
+      "name": "ollama-local",
+      "provider": "openai",
+      "model": "qwen2.5:7b",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "api_key": "ollama",
+      "temperature": 0.2,
+      "timeout_s": 30,
+      "_备注": "备用二：本机 ollama，不用联网也不用钱。默认关闭——没装 ollama 时它只会变成一个必然失败的槽位，让每次提问白等一次连接超时。要用就装好 ollama 并把它改成 true。",
+      "enabled": false
+    }
+  ]
+}

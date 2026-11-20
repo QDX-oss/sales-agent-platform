@@ -1,0 +1,355 @@
+/* =========================================================
+   销售数据分析大屏 - 浅蓝商业风格
+   设计稿 1920x1080，通过 JS 缩放适配任意屏幕
+   ========================================================= */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;                 /* 大屏不出现滚动条 */
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    /* 页面底色：浅蓝渐变 */
+    background: linear-gradient(135deg, #dbeeff 0%, #eef7ff 50%, #cfe6ff 100%);
+}
+
+/* 大屏容器：固定 1920x1080 设计尺寸，由 JS 等比缩放并居中 */
+#screen {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 1920px; height: 1080px;
+    transform-origin: center center;  /* 以中心为基准缩放 */
+    display: flex; flex-direction: column;
+    padding: 16px 20px 20px;
+}
+
+/* ===== 顶部标题栏 ===== */
+.header {
+    position: relative;
+    height: 76px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    /* 蓝色渐变标题条 */
+    background: linear-gradient(90deg, #1e6fff 0%, #3d9bff 50%, #1e6fff 100%);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(30, 111, 255, .28);
+    color: #fff;
+}
+.header-title {
+    font-size: 34px; letter-spacing: 8px; font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0, 60, 160, .4);
+}
+.header-time, .header-date {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 20px; opacity: .92; font-variant-numeric: tabular-nums;
+}
+.header-time { left: 28px; }
+.header-date { right: 150px; }
+
+/* 管理后台入口按钮（顶部标题栏右侧） */
+.admin-entry {
+    position: absolute; right: 28px; top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, .18);
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 18px;
+    color: #fff; text-decoration: none;
+    font-size: 14px;
+    transition: background .2s;
+}
+.admin-entry:hover { background: rgba(255, 255, 255, .32); }
+
+/* AI 分析入口按钮（左上角时间右侧） */
+.ai-entry {
+    position: absolute; left: 148px; top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, .18);
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 18px;
+    color: #fff; text-decoration: none;
+    font-size: 14px; cursor: pointer;
+    transition: background .2s;
+}
+.ai-entry:hover { background: rgba(255, 255, 255, .32); }
+
+/* 编排屏入口：与管理后台同一套胶囊样式，只换图标。
+   位置按实测排：管理后台(右28) → 日期(右150，宽约190) → 编排(右368)，
+   三者互不重叠。 */
+.orch-entry {
+    position: absolute; right: 368px; top: 50%;
+    transform: translateY(-50%);
+    padding: 6px 16px;
+    background: rgba(255, 255, 255, .18);
+    border: 1px solid rgba(255, 255, 255, .45);
+    border-radius: 18px;
+    color: #fff; text-decoration: none;
+    font-size: 14px;
+    transition: background .2s;
+}
+.orch-entry:hover { background: rgba(255, 255, 255, .32); }
+/* 闪光图标微动效 */
+.ai-entry, .ai-head b { font-weight: 600; letter-spacing: 1px; }
+.ai-entry { animation: sparkle 2.4s ease-in-out infinite; }
+@keyframes sparkle {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.05); }
+}
+
+/* 日期右侧留出空间（管理后台按钮仍在右侧） */
+
+/* ===== AI 数据分析师聊天面板 ===== */
+#ai-panel {
+    position: fixed; right: 20px; top: 90px;
+    width: 300px; height: 420px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(20, 60, 140, .25);
+    display: flex; flex-direction: column;
+    z-index: 9998; overflow: hidden;
+}
+.ai-head {
+    padding: 10px 14px; flex-shrink: 0;
+    background: linear-gradient(90deg, #1e6fff, #3d9bff);
+    color: #fff; font-size: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+#ai-close { cursor: pointer; font-size: 16px; }
+.ai-messages {
+    flex: 1; overflow-y: auto;
+    padding: 14px; background: #f5f8fd;
+    display: flex; flex-direction: column; gap: 10px;
+}
+.ai-msg {
+    max-width: 88%; padding: 8px 11px;
+    border-radius: 10px; font-size: 12px; line-height: 1.65;
+    white-space: pre-wrap; word-break: break-word;
+}
+.ai-bot { align-self: flex-start; background: #fff; color: #2b3a55; border: 1px solid #e3ebf7; }
+.ai-user { align-self: flex-end; background: #1e6fff; color: #fff; }
+.ai-msg.ai-loading { color: #7b8ba5; font-style: italic; }
+/* 回答下方的数字核对结果（台账 W0-05） */
+.ai-msg.ai-verify {
+    font-size: 11px; padding: 5px 9px; border-radius: 6px;
+    line-height: 1.5; align-self: flex-start; max-width: 88%;
+}
+.ai-verify-ok { background: #eaf6ef; color: #2c6850; border: 1px solid #c9e5d5; }
+.ai-verify-fail { background: #fdf3e3; color: #8a5d0f; border: 1px solid #f0dcae; }
+
+/* 重做提示：这一问被自动改过几次、改的是哪一类问题 */
+.ai-retry {
+    align-self: flex-start; max-width: 96%;
+    font-size: 11px; line-height: 1.7;
+    padding: 4px 9px; border-radius: 7px;
+    background: #eef2f7; color: #43536a; border: 1px solid #d5dfea;
+}
+.ai-retry-hand { background: #fdf3e3; color: #8a5d0f; border-color: #f0dcae; }
+
+/* 降级提示：换过通道就得说出来，别让用户以为主模型一直好着 */
+.ai-fallback {
+    align-self: flex-start; max-width: 96%;
+    font-size: 11px; line-height: 1.7;
+    padding: 4px 9px; border-radius: 7px;
+    background: #fdf0ef; color: #a4382f; border: 1px solid #f3cfcb;
+}
+
+/* 角色链路：谁取的数、谁打回、谁成文 —— 一句话看完这一问经过了几个角色 */
+.ai-msg.ai-crew {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px;
+    font-size: 11px; line-height: 1.6; padding: 0; align-self: flex-start; max-width: 96%;
+}
+.ai-chip {
+    padding: 2px 7px; border-radius: 9px; white-space: nowrap;
+    border: 1px solid transparent;
+}
+.chip-analyst { background: #eaf1fd; color: #23539c; border-color: #cfe0f8; }
+.chip-critic  { background: #eaf6ef; color: #2c6850; border-color: #c9e5d5; }
+.chip-bad     { background: #fdecea; color: #a33327; border-color: #f5cdc7; }
+.chip-curator { background: #f2eefb; color: #59418f; border-color: #ddd2f2; }
+.ai-arrow { color: #b7c4d6; }
+.ai-input-row {
+    flex-shrink: 0; display: flex; gap: 8px; padding: 10px;
+    border-top: 1px solid #eef2f8; background: #fff;
+}
+#ai-input {
+    flex: 1; border: 1px solid #d7e2f2; border-radius: 8px;
+    padding: 8px 10px; font-size: 13px; outline: none;
+}
+#ai-input:focus { border-color: #1e6fff; }
+#ai-send {
+    border: none; border-radius: 8px; padding: 0 18px;
+    background: #1e6fff; color: #fff; font-size: 13px; cursor: pointer;
+}
+#ai-send:disabled { background: #b9c6dd; cursor: not-allowed; }
+
+/* ===== 主体三栏布局 ===== */
+.main {
+    flex: 1; min-height: 0;
+    display: flex; gap: 16px;
+    margin-top: 16px;
+}
+.col {
+    flex: 1; min-height: 0;
+    min-width: 0;                     /* 关键：内容（图表 div）不能撑破栏宽，
+                                         否则三栏总宽超出 1920 画布，整屏被
+                                         多缩一轮、右侧还被裁掉 */
+    display: flex; flex-direction: column; gap: 16px;
+}
+.col-center { flex: 1.55; }
+
+/* ===== 玻璃质感白色卡片 ===== */
+.card {
+    flex: 1; min-height: 0;
+    background: rgba(255, 255, 255, .72);           /* 半透明白 */
+    backdrop-filter: blur(12px);                    /* 玻璃模糊 */
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(30, 111, 255, .12);
+    padding: 12px 16px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+.card-title {
+    flex-shrink: 0;
+    font-size: 20px; font-weight: 600; color: #1554ad;
+    padding-left: 10px; margin-bottom: 8px;
+    border-left: 4px solid #1e6fff;                 /* 蓝色标题竖条 */
+    display: flex; align-items: center; justify-content: space-between;
+}
+.chart { flex: 1; min-height: 0; }                  /* 图表容器撑满卡片 */
+
+/* 图表类型切换按钮 */
+.toggle-btn {
+    font-size: 13px; font-weight: 400;
+    color: #1e6fff; background: rgba(30, 111, 255, .1);
+    border: 1px solid rgba(30, 111, 255, .35);
+    border-radius: 20px; padding: 2px 12px;
+    cursor: pointer; user-select: none;
+    transition: all .2s;
+}
+.toggle-btn:hover { background: #1e6fff; color: #fff; }
+
+/* ===== 核心指标 KPI 横带：铺满整屏宽度 ===== */
+.kpi-row {
+    flex-shrink: 0; height: 112px;
+    display: flex; gap: 16px;
+}
+.kpi {
+    flex: 1;
+    /* 蓝色渐变 + 玻璃质感 */
+    background: linear-gradient(135deg, rgba(255,255,255,.85), rgba(219,238,255,.65));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(30, 111, 255, .15);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.kpi-icon {
+    font-size: 30px; width: 52px; height: 52px; line-height: 52px;
+    text-align: center; border-radius: 50%;
+    background: linear-gradient(135deg, #1e6fff, #38bdf8);
+    box-shadow: 0 4px 10px rgba(30, 111, 255, .35);
+}
+.kpi-num {
+    font-size: 30px; font-weight: 700; color: #0d47a1;
+    font-variant-numeric: tabular-nums;
+}
+.kpi-label { font-size: 14px; color: #5b7ba6; margin-top: 2px; white-space: nowrap; }
+
+/* 地图卡片更高一些 */
+.card-map { flex: 1.35; }
+
+/* ===== 销售明细：轮播列表 ===== */
+.card-detail { flex: 1.15; }
+.detail-head, .detail-row {
+    display: flex; align-items: center;
+    font-size: 16px; color: #35618f;
+    height: 38px;
+}
+.detail-head {
+    flex-shrink: 0; font-weight: 600; color: #1554ad;
+    border-bottom: 1px solid rgba(30, 111, 255, .25);
+}
+/* 每行宽度分配 */
+.c-date { width: 20%; } .c-prov { width: 12%; } .c-prod { width: 17%; }
+.c-ch   { width: 20%; } .c-num  { width: 15.5%; text-align: right; }
+
+.detail-viewport { flex: 1; min-height: 0; overflow: hidden; }
+.detail-scroll { will-change: transform; }
+
+/* 轮播动画：整体向上滚动，内容复制一份实现无缝衔接
+   鼠标悬停时通过 animation-play-state: paused 暂停 */
+.detail-scroll.animate {
+    animation: scroll-up 20s linear infinite;
+}
+.detail-viewport:hover .detail-scroll.animate {
+    animation-play-state: paused;
+}
+@keyframes scroll-up {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-50%); }   /* 50% = 一份列表的高度 */
+}
+.detail-row { border-bottom: 1px dashed rgba(30, 111, 255, .15); }
+.detail-row .hl { color: #1e6fff; font-weight: 600; }
+
+/* ===== 利润进度条 ===== */
+.progress-list { flex: 1; display: flex; flex-direction: column; justify-content: space-around; padding: 4px 2px; }
+.progress-item { font-size: 15px; }
+.progress-top { display: flex; justify-content: space-between; margin-bottom: 5px; color: #35618f; }
+.progress-top b { color: #1554ad; }
+.progress-track {
+    height: 10px; border-radius: 5px;
+    background: rgba(30, 111, 255, .12);
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%; width: 0;                        /* 初始 0，由 JS 动画填充 */
+    border-radius: 5px;
+    background: linear-gradient(90deg, #1e6fff, #38bdf8);  /* 蓝色渐变 */
+    transition: width 1.2s cubic-bezier(.25, .8, .35, 1);  /* 进度动画 */
+}
+
+/* ===== 地区热榜 ===== */
+.hot-list { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 2px; }
+.hot-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; line-height: 1; color: #35618f;
+    height: 20px;
+}
+.hot-rank {
+    width: 22px; height: 22px; line-height: 22px; text-align: center;
+    border-radius: 6px; font-size: 12px; font-weight: 700; color: #fff;
+    background: #8ab6e8;                            /* 普通名次底色 */
+}
+.hot-item:nth-child(1) .hot-rank { background: linear-gradient(135deg, #ff6b6b, #ff9f43); }  /* 金牌榜 */
+.hot-item:nth-child(2) .hot-rank { background: linear-gradient(135deg, #1e6fff, #38bdf8); }
+.hot-item:nth-child(3) .hot-rank { background: linear-gradient(135deg, #34c3a2, #6fe3c1); }
+.hot-name { width: 60px; }
+.hot-bar-track {
+    flex: 1; height: 7px; border-radius: 3.5px;
+    background: rgba(30, 111, 255, .12); overflow: hidden;
+}
+.hot-bar {
+    height: 100%; width: 0; border-radius: 3.5px;
+    background: linear-gradient(90deg, #1e6fff, #6fc3ff);
+    transition: width 1.2s cubic-bezier(.25, .8, .35, 1);
+}
+.hot-val { width: 92px; text-align: right; font-variant-numeric: tabular-nums; color: #1554ad; font-weight: 600; }
+
+/* ===== 无数据提示遮罩 ===== */
+#empty-overlay {
+    position: fixed; left: 0; top: 0; width: 100%; height: 100%;
+    background: rgba(240, 247, 255, .96);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+}
+.empty-box { text-align: center; }
+.empty-icon { font-size: 72px; margin-bottom: 16px; }
+.empty-text { font-size: 40px; font-weight: 700; color: #35618f; letter-spacing: 6px; }
+.empty-sub { margin-top: 14px; font-size: 16px; color: #7b8ba5; }
+.empty-link {
+    display: inline-block; margin-top: 24px; padding: 12px 32px;
+    background: #1e6fff; color: #fff; text-decoration: none;
+    border-radius: 8px; font-size: 16px;
+}
+.empty-link:hover { opacity: .88; }

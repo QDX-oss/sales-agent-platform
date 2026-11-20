@@ -1,0 +1,118 @@
+# Eval Set —— 固定用例集（台账 W4-01）
+#
+# 为什么题目要钉死在这份数据上：预期值是按 data.csv 逐题算好的，
+# 改数据就要连预期值一起改 —— 所以这里每题都写明 came_from（怎么算出来的），
+# 换行业/换数据的人能对得上账（W4-04 会复用这份结构）。
+#
+# 判定方式三种（台账口径）：exact（精确值）/ must_contain（必须包含）/ must_refuse（必须拒答）。
+# 外加 either 组合器给"口径歧义"这种两可题：答对了给分，诚实地拒答也算过。
+#
+# difficulty: normal / trap —— trap 是故意设计的易错题（台账要求 3 道）。
+
+version: 1
+data_file: data/data.csv
+cases:
+  - id: E01
+    question: 广东省的销售额是多少？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 1235074.0
+    came_from: data.csv 全部省份=广东的行，销售额列求和
+
+  - id: E02
+    question: 2025 年 11 月全国的销售额是多少？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 1438093.0
+    came_from: 月份=2025-11 的 25 行销售额求和
+
+  - id: E03
+    question: 口红这个产品一共卖了多少件？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 8899
+    came_from: 产品=口红的销量列求和
+
+  - id: E04
+    question: 哪个省的利润率最高？
+    difficulty: normal
+    expect:
+      type: must_contain
+      keywords: ["山东"]
+    came_from: 按省分组 利润/销售额*100 排序，山东 31.24% 居首（安徽 30.79 次之）
+
+  - id: E05
+    question: 抖音渠道的销售额是多少？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 3689006.0
+    came_from: 渠道=抖音的销售额求和
+
+  - id: E06
+    question: 线下专柜渠道总共赚了多少利润？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 793122.0
+    came_from: 渠道=线下专柜的利润列求和
+
+  - id: E07
+    question: 上海 2025 年 3 月的利润率是多少？
+    difficulty: normal
+    expect:
+      type: exact
+      value: 38.92
+    came_from: 省份=上海 且 月份=2025-03，利润/销售额*100 = 88268/226791*100
+
+  # ---- 以下 3 题故意设计为易错（台账口径）----
+
+  - id: T01
+    question: 广东省的毛利率是多少？
+    difficulty: trap
+    trap: 口径歧义。数据没有成本列，毛利率根本算不出来；利润率（利润÷销售额）= 20.88%。
+          拿利润率冒充毛利率是错的；正确做法是说明口径或诚实拒答。
+    expect:
+      type: either
+      options:
+        # 给数必须带口径：用利润率作答并说清这不是毛利率
+        - type: must_contain
+          keywords: ["利润率", "20.88"]
+          mode: all
+        # 或者干脆承认算不出来
+        - type: must_refuse
+    came_from: data.csv 无成本列；广东利润率 = 257874/1235074*100 = 20.88
+
+  - id: T02
+    question: 2026 年 1 月广东省的销售额是多少？
+    difficulty: trap
+    trap: 无数据。数据只覆盖 2025-01 ~ 2025-12，2026 年一整年零行。
+          编一个数出来就是幻觉，正确做法是拒答并说明数据范围。
+    expect:
+      type: must_refuse
+    came_from: 日期以 2026 开头的行数为 0
+
+  - id: T03
+    question: 广东的口红在线下专柜卖了多少销售额？
+    difficulty: trap
+    trap: 需要三条件组合（省份×产品×渠道）。只答广东口红的 29322 或只答
+          口红总销售额都是错的，实际答案只有一行 10710。
+    expect:
+      type: exact
+      value: 10710.0
+    came_from: 省份=广东 且 产品=口红 且 渠道=线下专柜（仅 1 行）
+
+regression:
+  # 失败回流（台账 W4-03）：回归/线上挂过的题，下次必测。
+  # expect.type = pending 表示"答案还没定口径"：跑但不判分，补上 expect 后参与通过率。
+  - id: R01
+    question: 哪个渠道的退货率最高？
+    difficulty: regression
+    group: regression
+    trap: 失败回流：run FAILSAMPLE2-20261116T092319（run_end=failed，2026-11-16）。这条题当初真的挂过，收进卷子是为了下次不再挂
+    expect:
+      type: must_refuse
+    came_from: run FAILSAMPLE2-20261116T092319；run_end=failed；2026-11-16；失败原因：重试预算用尽，停止自动修改，转人工复核；口径已定（2026-11-16）：data.csv 无退货率字段，正确做法是拒答并说明可替代的口径

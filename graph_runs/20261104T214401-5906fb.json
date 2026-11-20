@@ -1,0 +1,168 @@
+{
+  "run_id": "20261104T214401-5906fb",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-04T21:44:01.236",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 1,
+      "started_ms": 70.6,
+      "ended_ms": 74.2,
+      "duration_ms": 3.6,
+      "payload": {
+        "chars": 38,
+        "tools": []
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 83.2,
+      "ended_ms": 92.2,
+      "duration_ms": 9.0,
+      "payload": {
+        "checked": 1,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 87.5,
+      "ended_ms": 94.1,
+      "duration_ms": 6.6,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 111.1,
+      "ended_ms": 111.1,
+      "duration_ms": 0.0,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 117.8,
+      "ended_ms": 120.2,
+      "duration_ms": 2.4,
+      "payload": {
+        "chars": 38
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 126.6,
+      "ended_ms": 126.7,
+      "duration_ms": 0.1,
+      "payload": {
+        "checked": 1
+      }
+    }
+  },
+  "visits": {
+    "draft": 1
+  },
+  "loops": {
+    "gate->draft": 1
+  },
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东省的销售额是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东省的销售额是多少？"
+      },
+      {
+        "role": "assistant",
+        "content": "广东省销售额 1235074.0 元。竞品一定比我们便宜，建议尽快降价。"
+      },
+      {
+        "role": "user",
+        "content": "质检员打回了这一稿：初稿说利润率 45%，工具返回为 20.88%（口径混用）；建议降价 10% 属商务承诺（越界表述）。改法：删掉降价建议，利润率改用工具返回值\n请按上述意见重新作答，不要重复上一稿的问题。"
+      }
+    ],
+    "attempt": 1,
+    "evidence": [
+      17.0,
+      4064.0,
+      1235074.0,
+      257874.0,
+      20.88
+    ],
+    "draft": "广东省销售额 1235074.0 元。本次未提供竞品价格，暂不建议调整定价。",
+    "records": [],
+    "verdict": {
+      "passed": true,
+      "checked": 1,
+      "supported": [
+        {
+          "raw": "1235074.0",
+          "value": 1235074.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1235074.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "curated_text": "广东省销售额 1235074.0 元。本次未提供竞品价格，暂不建议调整定价。",
+    "final": "广东省销售额 1235074.0 元。本次未提供竞品价格，暂不建议调整定价。",
+    "curated": true
+  }
+}

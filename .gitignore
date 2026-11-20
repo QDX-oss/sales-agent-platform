@@ -1,0 +1,5 @@
+__pycache__/
+.pytest_cache/
+ai_key.txt
+_serve.log
+*.pyc

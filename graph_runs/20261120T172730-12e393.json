@@ -1,0 +1,159 @@
+{
+  "run_id": "20261120T172730-12e393",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-20T17:27:30.439",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 14.1,
+      "duration_ms": 14.1,
+      "payload": {
+        "chars": 6,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 24.2,
+      "ended_ms": 32.5,
+      "duration_ms": 8.3,
+      "payload": {
+        "checked": 0,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 27.3,
+      "ended_ms": 37.2,
+      "duration_ms": 9.9,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": true
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 71.7,
+      "ended_ms": 74.3,
+      "duration_ms": 2.6,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 80.5,
+      "ended_ms": 84.1,
+      "duration_ms": 3.6,
+      "payload": {
+        "chars": 6
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 90.8,
+      "ended_ms": 92.4,
+      "duration_ms": 1.6,
+      "payload": {
+        "checked": 0
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东销售额是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东销售额是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      17.0,
+      4064.0,
+      1235074.0,
+      257874.0,
+      20.88
+    ],
+    "draft": "（占位答案）",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"广东\"}, \"统计\": {\"记录数\": 17, \"销量\": 4064, \"销售额\": 1235074, \"利润\": 257874, \"利润率\": 20.88}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 0,
+      "supported": [],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": true,
+      "raw": "（占位答案）"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "（占位答案）",
+    "final": "（占位答案）",
+    "curated": true
+  }
+}

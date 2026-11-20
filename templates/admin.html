@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>数据管理后台</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background: #f0f4fa; color: #2b3a55; padding: 32px;
+        }
+        .wrap { max-width: 960px; margin: 0 auto; }
+        h1 { font-size: 22px; margin-bottom: 4px; }
+        .sub { color: #7b8ba5; font-size: 13px; margin-bottom: 24px; }
+        .sub a { color: #1e6fff; text-decoration: none; }
+        .card {
+            background: #fff; border-radius: 10px; padding: 20px 24px;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(30,60,120,.08);
+        }
+        .card h2 { font-size: 16px; margin-bottom: 14px; border-left: 4px solid #1e6fff; padding-left: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { border-bottom: 1px solid #eef2f8; padding: 8px 10px; text-align: left; white-space: nowrap; }
+        th { background: #f7faff; color: #5a6b85; }
+        td.num { text-align: right; }
+        .info-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .info-item { background: #f7faff; border-radius: 8px; padding: 12px; }
+        .info-item .k { font-size: 12px; color: #7b8ba5; margin-bottom: 4px; }
+        .info-item .v { font-size: 18px; font-weight: bold; color: #1e6fff; }
+        .empty-tip { color: #b0653a; font-size: 14px; }
+        .btn {
+            border: none; border-radius: 6px; padding: 9px 20px; font-size: 14px;
+            cursor: pointer; color: #fff; background: #1e6fff;
+        }
+        .btn:hover { opacity: .88; }
+        .btn:disabled { background: #b9c6dd; cursor: not-allowed; }
+        .btn-danger { background: #e5534b; }
+        .btn-ghost { background: #eef3fb; color: #35618f; }
+        .upload-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        input[type=file] { font-size: 13px; }
+        .msg { margin-top: 12px; font-size: 13px; display: none; padding: 8px 12px; border-radius: 6px; }
+        .msg-ok  { display: block; background: #e7f7ee; color: #1d7a46; }
+        .msg-err { display: block; background: #fdeceb; color: #c0392b; }
+        .required { color: #7b8ba5; font-size: 13px; margin-bottom: 10px; line-height: 1.9; }
+        .required code { background: #eef3fb; padding: 1px 6px; border-radius: 4px; color: #1e6fff; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <h1>CSV 数据管理后台</h1>
+    <div class="sub">管理数据大屏的数据文件，<a href="/" onclick="wbSwitch(event,'dashboard')">打开数据大屏 →</a>
+        <a href="/orchestration" onclick="wbSwitch(event,'orchestration')" style="color:#1e6fff;text-decoration:none;">🔀 运行编排</a>
+        <a href="/settings" onclick="wbSwitch(event,'settings')" style="color:#1e6fff;text-decoration:none;margin-left:14px;">⚙ 系统设置</a>
+        <button class="btn btn-ghost" id="logout-btn" style="float:right;padding:6px 16px;">退出登录</button>
+    </div>
+
+    <!-- 文件信息 -->
+    <div class="card">
+        <h2>文件信息</h2>
+        <div class="info-grid" id="info-grid"></div>
+        <div class="msg" id="info-msg"></div>
+    </div>
+
+    <!-- 数据预览 -->
+    <div class="card">
+        <h2>数据预览（前 20 行）</h2>
+        <div id="preview-box"></div>
+    </div>
+
+    <!-- 上传文件 -->
+    <div class="card">
+        <h2>上传新文件（覆盖当前数据）</h2>
+        <div class="required">
+            CSV 必须包含以下列：<code>日期</code><code>省份</code><code>产品</code><code>渠道</code><code>销量</code><code>销售额</code><code>利润</code>，否则上传会被拒绝。
+        </div>
+        <div class="upload-row">
+            <input type="file" id="file-input" accept=".csv">
+            <button class="btn" id="upload-btn">上传并覆盖</button>
+        </div>
+        <div class="msg" id="upload-msg"></div>
+    </div>
+
+    <!-- 删除文件 -->
+    <div class="card">
+        <h2>删除数据文件</h2>
+        <div class="required">删除后大屏将显示"暂无数据"，重新上传文件后恢复显示。删除前会再次确认。</div>
+        <button class="btn btn-danger" id="delete-btn">删除数据文件</button>
+        <div class="msg" id="delete-msg"></div>
+    </div>
+</div>
+
+<script>
+/* ---------- 工具 ---------- */
+function fmtSize(n) {
+    if (n < 1024) return n + " B";
+    if (n < 1048576) return (n / 1024).toFixed(1) + " KB";
+    return (n / 1048576).toFixed(2) + " MB";
+}
+function fmtTime(ts) {
+    if (!ts) return "-";
+    return new Date(ts * 1000).toLocaleString("zh-CN");
+}
+function showMsg(id, text, ok) {
+    var el = document.getElementById(id);
+    el.textContent = text;
+    el.className = "msg " + (ok ? "msg-ok" : "msg-err");
+}
+
+/* ---------- 文件信息 ---------- */
+function loadInfo() {
+    fetch("/api/admin/info").then(function (r) { return r.json(); }).then(function (d) {
+        var grid = document.getElementById("info-grid");
+        if (!d.exists) {
+            grid.innerHTML = '<div class="empty-tip">当前没有数据文件，请上传 CSV（上传后大屏恢复显示）。</div>';
+            return;
+        }
+        if (d.error) { showMsg("info-msg", d.error, false); return; }
+        grid.innerHTML =
+            '<div class="info-item"><div class="k">状态</div><div class="v">正常</div></div>' +
+            '<div class="info-item"><div class="k">数据行数</div><div class="v">' + d.rows.toLocaleString() + '</div></div>' +
+            '<div class="info-item"><div class="k">文件大小</div><div class="v">' + fmtSize(d.size) + '</div></div>' +
+            '<div class="info-item"><div class="k">最后修改</div><div class="v" style="font-size:14px">' + fmtTime(d.mtime) + '</div></div>';
+    });
+}
+
+/* ---------- 数据预览 ---------- */
+function loadPreview() {
+    fetch("/api/admin/preview?limit=20").then(function (r) { return r.json(); }).then(function (d) {
+        var box = document.getElementById("preview-box");
+        if (!d.rows.length) {
+            box.innerHTML = '<div class="empty-tip">暂无数据。</div>';
+            return;
+        }
+        var html = '<table><thead><tr>' +
+            d.columns.map(function (c) { return '<th>' + c + '</th>'; }).join("") +
+            '</tr></thead><tbody>' +
+            d.rows.map(function (row) {
+                return '<tr>' + d.columns.map(function (c) {
+                    return '<td class="num">' + row[c] + '</td>';
+                }).join("") + '</tr>';
+            }).join("") + '</tbody></table>';
+        box.innerHTML = html;
+    });
+}
+
+/* ---------- 上传 ---------- */
+document.getElementById("upload-btn").onclick = function () {
+    var input = document.getElementById("file-input");
+    if (!input.files.length) { showMsg("upload-msg", "请先选择 CSV 文件", false); return; }
+    var fd = new FormData();
+    fd.append("file", input.files[0]);
+    this.disabled = true;
+    var self = this;
+    fetch("/api/admin/upload", { method: "POST", body: fd })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            self.disabled = false;
+            if (d.ok) {
+                showMsg("upload-msg", "上传成功，共 " + d.rows.toLocaleString() + " 行数据，大屏已恢复显示。", true);
+                input.value = "";
+            } else {
+                showMsg("upload-msg", d.error, false);
+            }
+            loadInfo(); loadPreview();
+        });
+};
+
+/* ---------- 删除（带确认） ---------- */
+document.getElementById("delete-btn").onclick = function () {
+    if (!confirm("确认删除当前数据文件吗？删除后大屏将显示\"暂无数据\"。")) return;
+    if (!confirm("再次确认：该操作不可撤销，确定删除？")) return;
+    fetch("/api/admin/delete?confirm=true", { method: "DELETE" })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d.ok) showMsg("delete-msg", "已删除。大屏现在显示\"暂无数据\"，重新上传文件后恢复。", true);
+            else showMsg("delete-msg", d.error, false);
+            loadInfo(); loadPreview();
+        });
+};
+
+/* ---------- 退出登录 ---------- */
+document.getElementById("logout-btn").onclick = function () {
+    fetch("/api/logout", { method: "POST" }).then(function () {
+        location.href = "/login";
+    });
+};
+
+/* ---------- 启动 ---------- */
+loadInfo();
+loadPreview();
+</script>
+<script src="/static/js/shell-link.js"></script>
+</body>
+</html>

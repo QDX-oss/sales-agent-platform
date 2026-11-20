@@ -1,0 +1,37 @@
+销售数据分析大屏 - 使用说明
+================================
+
+一、环境要求
+- Python 3.12（PyCharm 中将解释器设为 Python 3.12 即可）
+- 无需数据库，数据存放在 data/data.csv
+
+二、安装依赖（首次运行前，在 PyCharm 终端执行）
+    pip install -r requirements.txt
+
+三、启动
+    1. 在 PyCharm 中直接运行 app.py（右键 Run），或在终端执行：
+        python app.py
+    2. 浏览器打开 http://127.0.0.1:5000
+
+四、访问入口
+    - 登录页:    http://127.0.0.1:5000/login   （默认密码 12345）
+    - 数据大屏:  http://127.0.0.1:5000/        （登录后进入）
+    - 管理后台:  http://127.0.0.1:5000/admin   （CSV 上传/预览/删除、系统设置入口）
+    - 系统设置:  http://127.0.0.1:5000/settings（修改密码、访客记录）
+
+五、AI 数据分析师"小张"
+    - 大屏左上角点击"AI 分析"按钮即可对话
+    - API Key 保存在 ai_key.txt（已配置好，可自行更换）
+
+六、文件结构
+    app.py         Flask 主程序（大屏 + 管理后台 + 登录 + 设置）
+    ai_analyst.py  AI 数据分析师小张（LangChain + DeepSeek）
+    gen_data.py    模拟数据生成脚本（运行可重新生成 data/data.csv）
+    ai_key.txt     DeepSeek API Key
+    data/          数据文件（data.csv 销售数据、password.json 密码、visits.json 访问记录）
+    templates/     页面模板（大屏/登录/管理后台/设置）
+    static/        样式、脚本、中国地图数据
+
+七、常见问题
+    - 端口被占用：修改 app.py 最后一行的 port=5000 为其他端口
+    - 想换回美妆数据：把桌面"美妆产品1.csv"通过管理后台上传即可

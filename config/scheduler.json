@@ -1,0 +1,16 @@
+{
+  "_说明": "调度策略（台账 W2-01）。slots = 同一批最多同时做几件；default_deadline_ms = 节点没单独配时的时限，从它真正开跑那一刻算起（排队等别人不算）；node_priority 数字大的先做；node_deadline_ms 按节点覆盖时限。改这里后重启服务即生效，不用动 Python。",
+  "slots": 2,
+  "default_deadline_ms": 120000,
+  "node_priority": {
+    "draft": 100,
+    "verify": 90,
+    "critique": 80,
+    "gate": 70,
+    "curate": 60,
+    "final_check": 60
+  },
+  "node_deadline_ms": {
+    "draft": 150000
+  }
+}

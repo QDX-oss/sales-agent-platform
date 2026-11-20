@@ -1,0 +1,173 @@
+{
+  "run_id": "20261116T205430-a99bdc",
+  "graph": "service.answer",
+  "version": 1,
+  "updated_at": "2026-11-16T20:54:33.927",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "答复草拟",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 1911.9,
+      "duration_ms": 1911.9,
+      "payload": {
+        "chars": 76,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1939.9,
+      "ended_ms": 1954.7,
+      "duration_ms": 14.8,
+      "payload": {
+        "checked": 4,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语气质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1944.2,
+      "ended_ms": 2644.4,
+      "duration_ms": 700.2,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2691.9,
+      "ended_ms": 2694.8,
+      "duration_ms": 2.9,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "答复定稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2704.9,
+      "ended_ms": 3637.5,
+      "duration_ms": 932.6,
+      "payload": {
+        "chars": 35
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate"
+  ],
+  "state": {
+    "question": "电话渠道的工单量和一次解决率分别是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "电话渠道的工单量和一次解决率分别是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      94.0,
+      5057.0,
+      54113.0,
+      3084.0,
+      60.98
+    ],
+    "draft": "电话渠道数据如下：\n\n- 工单量：5057\n- 一次解决率：60.98%（一次解决 3084 单）\n\n依据：按渠道=电话统计全部数据，共 94 条记录。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"channel\": \"电话\"}, \"统计\": {\"记录数\": 94, \"工单量\": 5057, \"处理时长\": 54113, \"一次解决\": 3084, \"一次解决率\": 60.98}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 4,
+      "supported": [
+        {
+          "raw": "5057",
+          "value": 5057.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 5057.0
+        },
+        {
+          "raw": "60.98%",
+          "value": 60.98,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 60.98
+        },
+        {
+          "raw": "3084",
+          "value": 3084.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3084.0
+        },
+        {
+          "raw": "94",
+          "value": 94.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 94.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "电话渠道工单量5057，一次解决率60.98%（一次解决3084单）。",
+    "final": "",
+    "curated": false
+  }
+}

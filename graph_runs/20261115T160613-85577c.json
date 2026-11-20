@@ -1,0 +1,202 @@
+{
+  "run_id": "20261115T160613-85577c",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-15T16:06:18.558",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2439.9,
+      "duration_ms": 2439.9,
+      "payload": {
+        "chars": 99,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2470.4,
+      "ended_ms": 2558.0,
+      "duration_ms": 87.6,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2500.8,
+      "ended_ms": 3526.8,
+      "duration_ms": 1026.0,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3595.2,
+      "ended_ms": 3617.0,
+      "duration_ms": 21.8,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3631.4,
+      "ended_ms": 4848.9,
+      "duration_ms": 1217.5,
+      "payload": {
+        "chars": 65
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4862.8,
+      "ended_ms": 4885.5,
+      "duration_ms": 22.7,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "口红这个产品一共卖了多少件？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "口红这个产品一共卖了多少件？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      32.0,
+      8899.0,
+      1697987.0,
+      393913.0,
+      23.2
+    ],
+    "draft": "口红累计销量为 8,899 件。\n\n依据：全量数据中产品为“口红”的统计结果为：订单数 32 笔，销量 8,899 件，销售额 1,697,987 元，利润 393,913 元，利润率 23.2%。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"\", \"product\": \"口红\", \"channel\": \"\"}, \"统计\": {\"订单数\": 32, \"销量\": 8899, \"销售额\": 1697987.0, \"利润\": 393913.0, \"利润率\": 23.2}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "8,899",
+          "value": 8899.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 8899.0
+        },
+        {
+          "raw": "32",
+          "value": 32.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 32.0
+        },
+        {
+          "raw": "8,899",
+          "value": 8899.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 8899.0
+        },
+        {
+          "raw": "1,697,987",
+          "value": 1697987.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1697987.0
+        },
+        {
+          "raw": "393,913",
+          "value": 393913.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 393913.0
+        },
+        {
+          "raw": "23.2%",
+          "value": 23.2,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 23.2
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "口红累计销量为 8,899 件，对应订单 32 笔，销售额 1,697,987 元，利润 393,913 元，利润率 23.2%。",
+    "final": "口红累计销量为 8,899 件，对应订单 32 笔，销售额 1,697,987 元，利润 393,913 元，利润率 23.2%。",
+    "curated": true
+  }
+}

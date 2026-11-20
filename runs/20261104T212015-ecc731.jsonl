@@ -1,0 +1,4 @@
+{"type": "run", "run_id": "20261104T212015-ecc731", "question": "广东省销售额是多少？", "source": "test", "tags": {}, "started_at": "2026-11-04T21:20:15.501", "trace_version": 1}
+{"type": "event", "seq": 1, "at": "2026-11-04T21:20:17.752", "event": "channel_unavailable", "detail": {"name": "deepseek", "reason": "缺少密钥文件 ai_key.txt"}}
+{"type": "event", "seq": 2, "at": "2026-11-04T21:20:17.756", "event": "channel_unavailable", "detail": {"name": "siliconflow", "reason": "缺少密钥文件 ai_key_backup.txt"}}
+{"type": "event", "seq": 3, "at": "2026-11-04T21:20:17.759", "event": "channel_unavailable", "detail": {"name": "ollama-local", "reason": "enabled=false"}}

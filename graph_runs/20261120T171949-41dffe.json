@@ -1,0 +1,195 @@
+{
+  "run_id": "20261120T171949-41dffe",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-20T17:19:53.092",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2082.1,
+      "duration_ms": 2082.1,
+      "payload": {
+        "chars": 84,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2093.8,
+      "ended_ms": 2103.9,
+      "duration_ms": 10.1,
+      "payload": {
+        "checked": 5,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2097.4,
+      "ended_ms": 2890.7,
+      "duration_ms": 793.3,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2929.9,
+      "ended_ms": 2932.7,
+      "duration_ms": 2.8,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2939.4,
+      "ended_ms": 3931.7,
+      "duration_ms": 992.3,
+      "payload": {
+        "chars": 56
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3937.8,
+      "ended_ms": 3940.6,
+      "duration_ms": 2.8,
+      "payload": {
+        "checked": 4
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "总销售额是多少",
+    "messages": [
+      {
+        "role": "user",
+        "content": "总销售额是多少"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      300.0,
+      73922.0,
+      16848875.0,
+      4121219.0,
+      24.46
+    ],
+    "draft": "全部数据（共 300 条记录）的总销售额为 **16,848,875 元**。\n\n依据：总销量 73,922，总利润 4,121,219 元，整体利润率 24.46%。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\"}, \"统计\": {\"记录数\": 300, \"销量\": 73922, \"销售额\": 16848875, \"利润\": 4121219, \"利润率\": 24.46}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 5,
+      "supported": [
+        {
+          "raw": "300",
+          "value": 300.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 300.0
+        },
+        {
+          "raw": "16,848,875",
+          "value": 16848875.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 16848875.0
+        },
+        {
+          "raw": "73,922",
+          "value": 73922.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 73922.0
+        },
+        {
+          "raw": "4,121,219",
+          "value": 4121219.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 4121219.0
+        },
+        {
+          "raw": "24.46%",
+          "value": 24.46,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 24.46
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "总销售额为16,848,875元。依据：总销量73,922，总利润4,121,219元，整体利润率24.46%。",
+    "final": "总销售额为16,848,875元。依据：总销量73,922，总利润4,121,219元，整体利润率24.46%。",
+    "curated": true
+  }
+}

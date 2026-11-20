@@ -1,0 +1,2 @@
+{"type": "run", "run_id": "20261104T212243-9454af", "question": "埋点故障", "source": "test", "tags": {}, "started_at": "2026-11-04T21:22:43.411", "trace_version": 1}
+{"type": "run_end", "run_id": "20261104T212243-9454af", "status": "ok", "started_at": "2026-11-04T21:22:43.411", "ended_at": "2026-11-04T21:22:43.539", "duration_ms": 128.5, "step_count": 0, "failed_steps": 0, "retry_count": 0, "tokens": {"in": 0, "out": 0}, "error": null}

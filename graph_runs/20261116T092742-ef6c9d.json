@@ -1,0 +1,209 @@
+{
+  "run_id": "20261116T092742-ef6c9d",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:27:46.636",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2287.8,
+      "duration_ms": 2287.8,
+      "payload": {
+        "chars": 128,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2311.5,
+      "ended_ms": 2376.2,
+      "duration_ms": 64.7,
+      "payload": {
+        "checked": 7,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2332.2,
+      "ended_ms": 3323.0,
+      "duration_ms": 990.8,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3389.7,
+      "ended_ms": 3412.2,
+      "duration_ms": 22.5,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3426.6,
+      "ended_ms": 4377.5,
+      "duration_ms": 950.9,
+      "payload": {
+        "chars": 64
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4391.0,
+      "ended_ms": 4412.0,
+      "duration_ms": 21.0,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东的口红在线下专柜卖了多少销售额？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东的口红在线下专柜卖了多少销售额？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      1.0,
+      51.0,
+      10710.0,
+      3806.0,
+      35.54
+    ],
+    "draft": "**结论：广东口红线下专柜销售额为 10,710 元。**\n\n依据（全时段汇总）：\n- 销量：51 件\n- 销售额：10,710 元\n- 利润：3,806 元，利润率 35.54%\n- 订单数：1 单\n\n注：该组合仅 1 笔订单，样本量很小，参考时请注意。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"广东\", \"product\": \"口红\", \"channel\": \"线下专柜\"}, \"统计\": {\"订单数\": 1, \"销量\": 51, \"销售额\": 10710.0, \"利润\": 3806.0, \"利润率\": 35.54}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 7,
+      "supported": [
+        {
+          "raw": "10,710",
+          "value": 10710.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 10710.0
+        },
+        {
+          "raw": "51",
+          "value": 51.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 51.0
+        },
+        {
+          "raw": "10,710",
+          "value": 10710.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 10710.0
+        },
+        {
+          "raw": "3,806",
+          "value": 3806.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3806.0
+        },
+        {
+          "raw": "35.54%",
+          "value": 35.54,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 35.54
+        },
+        {
+          "raw": "1",
+          "value": 1.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1.0
+        },
+        {
+          "raw": "1",
+          "value": 1.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "广东口红线下专柜销售额为10,710元，销量51件，利润3,806元，利润率35.54%，仅1笔订单，样本量很小，参考时请注意。",
+    "final": "广东口红线下专柜销售额为10,710元，销量51件，利润3,806元，利润率35.54%，仅1笔订单，样本量很小，参考时请注意。",
+    "curated": true
+  }
+}

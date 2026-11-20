@@ -1,0 +1,209 @@
+{
+  "run_id": "20261115T160756-a89c36",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-15T16:08:00.528",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 1636.1,
+      "duration_ms": 1636.1,
+      "payload": {
+        "chars": 112,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1665.9,
+      "ended_ms": 1751.4,
+      "duration_ms": 85.5,
+      "payload": {
+        "checked": 7,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1693.9,
+      "ended_ms": 2677.5,
+      "duration_ms": 983.6,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2761.8,
+      "ended_ms": 2786.5,
+      "duration_ms": 24.7,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2805.9,
+      "ended_ms": 3751.0,
+      "duration_ms": 945.1,
+      "payload": {
+        "chars": 77
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3769.3,
+      "ended_ms": 3796.2,
+      "duration_ms": 26.9,
+      "payload": {
+        "checked": 6
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "抖音渠道的销售额是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "抖音渠道的销售额是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      68.0,
+      16487.0,
+      3689006.0,
+      920715.0,
+      24.96
+    ],
+    "draft": "抖音渠道销售额为 3,689,006 元（约 368.9 万元）。\n\n依据：全量数据下抖音渠道统计——订单数 68 笔，销量 16,487 件，销售额 3,689,006 元，利润 920,715 元，利润率 24.96%。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"\", \"product\": \"\", \"channel\": \"抖音\"}, \"统计\": {\"订单数\": 68, \"销量\": 16487, \"销售额\": 3689006.0, \"利润\": 920715.0, \"利润率\": 24.96}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 7,
+      "supported": [
+        {
+          "raw": "3,689,006",
+          "value": 3689006.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3689006.0
+        },
+        {
+          "raw": "368.9 万",
+          "value": 3689000.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3689006.0
+        },
+        {
+          "raw": "68",
+          "value": 68.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 68.0
+        },
+        {
+          "raw": "16,487",
+          "value": 16487.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 16487.0
+        },
+        {
+          "raw": "3,689,006",
+          "value": 3689006.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3689006.0
+        },
+        {
+          "raw": "920,715",
+          "value": 920715.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 920715.0
+        },
+        {
+          "raw": "24.96%",
+          "value": 24.96,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 24.96
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "抖音渠道销售额为 3,689,006 元（约 368.9 万元）。订单 68 笔，销量 16,487 件，利润 920,715 元，利润率 24.96%。",
+    "final": "抖音渠道销售额为 3,689,006 元（约 368.9 万元）。订单 68 笔，销量 16,487 件，利润 920,715 元，利润率 24.96%。",
+    "curated": true
+  }
+}

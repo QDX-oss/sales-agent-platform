@@ -1,0 +1,61 @@
+# =====================================================================
+# 行业配置 · 客服（台账 W4-04）
+#
+# 与 sales.yaml 同构的一份"另一个行业"。它存在的意义是证明：
+#   换数据（service.csv）、换字段、换口径、换角色自称、换流程图，
+#   全部只发生在这份文件里，Python 一行不改。
+#
+# 与销售的差异（切换后编排屏上肉眼可见的）：
+#   · 图名 sales.answer → service.answer
+#   · 流程少一个节点：没有"成文复检"（客服答复短，复检边际价值低；
+#     打回重做的回边仍在 —— Self-Loop 不因行业而消失）
+#   · 节点 label 全换：取数出稿 → 答复草拟、语义质检 → 语气质检…
+#   · 班组自称全换：小张/销售数据分析师 → 小周/客服数据分析专员
+#   · 口径全换：销售额/利润/利润率 → 工单量/处理时长/一次解决率
+# =====================================================================
+
+industry: service
+display_name: 客服质检分析
+screen_title: 客服数据分析大屏
+
+data:
+  file: data/service.csv
+  date_col: 日期
+  dims:
+    - { param: channel,     column: 渠道,     desc: 渠道名（如 电话） }
+    - { param: issue,       column: 问题类型, desc: 问题类型（如 物流投诉） }
+    - { param: line,        column: 产品线,   desc: 产品线（如 美妆） }
+  metrics: [工单量, 处理时长, 一次解决]
+  derived:
+    一次解决率: { num: 一次解决, den: 工单量 }
+  default_metric: 工单量
+
+agent:
+  analyst_name: 小周
+  analyst_title: 客服数据分析专员
+  fields_line: 数据字段包括：日期、渠道、问题类型、产品线、工单量、处理时长、一次解决。
+  metrics_line: 工单量 / 处理时长 / 一次解决率
+  out_of_scope: 承诺赔偿、给客服个人定责、披露客户隐私、越过工单流程给处理结果的表述
+  metrics_glossary: >-
+    工单量 = 工单条数合计；处理时长 = 时长合计；一次解决率 = 一次解决 ÷ 工单量 × 100（百分数，保留两位）。
+  curator_name: 小陈
+  curator_title: 答复定稿
+  critic_name: 老赵
+  critic_title: 语气质检员
+
+pipeline:
+  name: service.answer
+  version: 1
+  nodes:
+    - { id: draft,    agent: Analyst,  action: draft,    needs: [], run_if: always, label: 答复草拟, priority: 100 }
+    - { id: verify,   agent: verifier, action: verify,   needs: [draft],            label: 数字回查, priority: 90 }
+    - { id: critique, agent: Critic,   action: critique, needs: [draft],            label: 语气质检, priority: 80 }
+    - { id: gate,     agent: gate,     action: gate,     needs: [verify, critique], run_if: always, kind: gate, label: 合议, priority: 70 }
+    - { id: curate,   agent: Curator,  action: curate,   needs: [gate],             label: 答复定稿, priority: 60 }
+  edges:
+    - { from: gate, to: draft, when: fail, max_loops: 2, label: 打回重做 }
+
+samples:
+  - 电话渠道的工单量是多少？
+  - 各问题类型的工单量排名
+  - 2026 年 1 月的工单量是多少？

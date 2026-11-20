@@ -1,0 +1,202 @@
+{
+  "run_id": "20261116T092547-2f679f",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:25:51.287",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 1716.4,
+      "duration_ms": 1716.4,
+      "payload": {
+        "chars": 117,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1758.1,
+      "ended_ms": 1842.4,
+      "duration_ms": 84.3,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 1791.2,
+      "ended_ms": 2822.1,
+      "duration_ms": 1030.9,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2882.7,
+      "ended_ms": 2903.3,
+      "duration_ms": 20.6,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2916.5,
+      "ended_ms": 3962.2,
+      "duration_ms": 1045.7,
+      "payload": {
+        "chars": 63
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3975.6,
+      "ended_ms": 3996.4,
+      "duration_ms": 20.8,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "线下专柜渠道总共赚了多少利润？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "线下专柜渠道总共赚了多少利润？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      57.0,
+      14461.0,
+      3635067.0,
+      793122.0,
+      21.82
+    ],
+    "draft": "线下专柜渠道累计利润为 793,122 元。\n\n依据（全时段、全地区、全产品，渠道=线下专柜）：\n- 销售额：3,635,067 元\n- 利润：793,122 元\n- 利润率：21.82%\n- 销量：14,461 件，订单数 57 笔",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"\", \"product\": \"\", \"channel\": \"线下专柜\"}, \"统计\": {\"订单数\": 57, \"销量\": 14461, \"销售额\": 3635067.0, \"利润\": 793122.0, \"利润率\": 21.82}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "793,122",
+          "value": 793122.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 793122.0
+        },
+        {
+          "raw": "3,635,067",
+          "value": 3635067.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 3635067.0
+        },
+        {
+          "raw": "793,122",
+          "value": 793122.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 793122.0
+        },
+        {
+          "raw": "21.82%",
+          "value": 21.82,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 21.82
+        },
+        {
+          "raw": "14,461",
+          "value": 14461.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 14461.0
+        },
+        {
+          "raw": "57",
+          "value": 57.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 57.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "线下专柜渠道累计利润为793,122元，利润率21.82%。该渠道销售额3,635,067元，销量14,461件，订单57笔。",
+    "final": "线下专柜渠道累计利润为793,122元，利润率21.82%。该渠道销售额3,635,067元，销量14,461件，订单57笔。",
+    "curated": true
+  }
+}

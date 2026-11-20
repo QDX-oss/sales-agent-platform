@@ -1,0 +1,180 @@
+{
+  "run_id": "20261116T205342-798517",
+  "graph": "service.answer",
+  "version": 1,
+  "updated_at": "2026-11-16T20:53:47.430",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "答复草拟",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2819.1,
+      "duration_ms": 2819.1,
+      "payload": {
+        "chars": 77,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2840.3,
+      "ended_ms": 2854.6,
+      "duration_ms": 14.3,
+      "payload": {
+        "checked": 5,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语气质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2843.6,
+      "ended_ms": 3809.9,
+      "duration_ms": 966.3,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3855.0,
+      "ended_ms": 3857.6,
+      "duration_ms": 2.6,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "答复定稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3864.7,
+      "ended_ms": 5234.6,
+      "duration_ms": 1369.9,
+      "payload": {
+        "chars": 52
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate"
+  ],
+  "state": {
+    "question": "整体的一次解决率是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "整体的一次解决率是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      300.0,
+      17099.0,
+      191069.0,
+      10647.0,
+      62.27
+    ],
+    "draft": "整体一次解决率为 62.27%。\n\n依据：全部数据共 300 条记录，工单量 17,099 单，其中一次解决 10,647 单，一次解决率 62.27%。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\"}, \"统计\": {\"记录数\": 300, \"工单量\": 17099, \"处理时长\": 191069, \"一次解决\": 10647, \"一次解决率\": 62.27}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 5,
+      "supported": [
+        {
+          "raw": "62.27%",
+          "value": 62.27,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 62.27
+        },
+        {
+          "raw": "300",
+          "value": 300.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 300.0
+        },
+        {
+          "raw": "17,099",
+          "value": 17099.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 17099.0
+        },
+        {
+          "raw": "10,647",
+          "value": 10647.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 10647.0
+        },
+        {
+          "raw": "62.27%",
+          "value": 62.27,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 62.27
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "整体一次解决率为62.27%。全部数据共300条记录，工单量17,099单，其中一次解决10,647单。",
+    "final": "",
+    "curated": false
+  }
+}

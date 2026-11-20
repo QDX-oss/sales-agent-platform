@@ -1,0 +1,202 @@
+{
+  "run_id": "20261116T092555-6cb28f",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-16T09:26:00.204",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2210.0,
+      "duration_ms": 2210.0,
+      "payload": {
+        "chars": 149,
+        "tools": [
+          "query_stats"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2233.1,
+      "ended_ms": 2296.6,
+      "duration_ms": 63.5,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2254.0,
+      "ended_ms": 3426.6,
+      "duration_ms": 1172.6,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3489.4,
+      "ended_ms": 3509.8,
+      "duration_ms": 20.4,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3524.1,
+      "ended_ms": 4502.7,
+      "duration_ms": 978.6,
+      "payload": {
+        "chars": 66
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4516.4,
+      "ended_ms": 4537.4,
+      "duration_ms": 21.0,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "广东省的毛利率是多少？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "广东省的毛利率是多少？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      17.0,
+      4064.0,
+      1235074.0,
+      257874.0,
+      20.88
+    ],
+    "draft": "**结论：广东省整体利润率为 20.88%**（即毛利率口径下的利润率）。\n\n依据（广东省全量数据汇总）：\n- 销售额：1,235,074 元\n- 利润：257,874 元\n- 利润率：20.88%\n- 订单数：17 笔，销量：4,064 件\n\n如需按产品、渠道或月份拆分查看，可以告诉我具体维度。",
+    "records": [
+      {
+        "name": "query_stats",
+        "output": "{\"条件\": {\"date\": \"\", \"province\": \"广东\", \"product\": \"\", \"channel\": \"\"}, \"统计\": {\"订单数\": 17, \"销量\": 4064, \"销售额\": 1235074.0, \"利润\": 257874.0, \"利润率\": 20.88}}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "20.88%",
+          "value": 20.88,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 20.88
+        },
+        {
+          "raw": "1,235,074",
+          "value": 1235074.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1235074.0
+        },
+        {
+          "raw": "257,874",
+          "value": 257874.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 257874.0
+        },
+        {
+          "raw": "20.88%",
+          "value": 20.88,
+          "kind": "percent",
+          "ignored": null,
+          "matched": 20.88
+        },
+        {
+          "raw": "17",
+          "value": 17.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 17.0
+        },
+        {
+          "raw": "4,064",
+          "value": 4064.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 4064.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [],
+      "evidence_count": 5,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "广东省整体利润率为20.88%（毛利率口径）。依据：销售额1,235,074元，利润257,874元，订单17笔，销量4,064件。",
+    "final": "广东省整体利润率为20.88%（毛利率口径）。依据：销售额1,235,074元，利润257,874元，订单17笔，销量4,064件。",
+    "curated": true
+  }
+}

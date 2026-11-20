@@ -1,0 +1,76 @@
+# =====================================================================
+# 行业配置 · 销售（台账 W4-04）
+#
+# 这是「换一份配置换一个行业」里的"销售"这份。全文件回答四个问题：
+#   ① 用哪份数据、有哪些维度和指标（data 段）
+#   ② Agent 班组怎么自称、口径是什么（agent 段）
+#   ③ 流程图长什么样（pipeline 段 —— 原 core/team.py SALES_PIPELINE 的外化）
+#   ④ 演示时可以直接抄的问题（samples 段）
+#
+# 换行业 = 新增一份这样的 yaml（参照 service.yaml），界面下拉切换。
+# 不改任何 Python —— 这是 W4-04 的验收口径，也是这份文件存在的理由。
+#
+# 注意：模型通道（config/models.json）、调度策略（config/scheduler.json）、
+# 班组重试预算（config/team.json）是跨行业共用的策略，不放在这里 ——
+# 行业回答"干什么活"，策略回答"怎么干活"，两件事不该搅在一起。
+# =====================================================================
+
+industry: sales
+display_name: 销售数据分析
+screen_title: 销售数据分析大屏
+
+# ---------- 数据：列就是接口 ----------
+data:
+  file: data/data.csv
+  date_col: 日期
+  # 维度 = 可过滤 / 可排名的列。param 是工具参数名（给模型看），column 是列名（给 pandas 看）
+  dims:
+    - { param: province, column: 省份, desc: 省份名（如 广东） }
+    - { param: product,  column: 产品, desc: 产品名（如 口红） }
+    - { param: channel,  column: 渠道, desc: 渠道名（如 抖音） }
+  # 指标 = 可求和的数值列
+  metrics: [销量, 销售额, 利润]
+  # 派生指标 = 两个指标相除的比率（百分数，保留两位）
+  derived:
+    利润率: { num: 利润, den: 销售额 }
+  default_metric: 销售额
+
+# ---------- Agent 班组的行业层文案 ----------
+# 角色 key（Analyst/Critic/Curator）不在这里改 —— 流程图按 key 找人，
+# 改 key 等于改流程；这里只改"这个人是谁、他说什么话"。
+agent:
+  analyst_name: 小张
+  analyst_title: 销售数据分析师
+  fields_line: 数据字段包括：日期、省份、产品、渠道、销量、销售额、利润。
+  # Critic 质检 rubric 第 3 条（越界）与第 4 条（口径）的行业版本
+  metrics_line: 销售额 / 利润 / 利润率 / 销量
+  out_of_scope: 降价、返点、折扣、承诺、保证、包治类商务建议或保证性表述
+  # diagnose.py 口径诊断用的定义行（打回时告诉模型"按什么定义重算"）
+  metrics_glossary: >-
+    销售额 = 金额合计；利润 = 利润合计；利润率 = 利润 ÷ 销售额 × 100（百分数，保留两位）；
+    销量 = 件数。
+  curator_name: 小王
+  curator_title: 结论编辑
+  critic_name: 老李
+  critic_title: 质检员
+
+# ---------- 流程图（SALES_PIPELINE 的外化，结构一字不差） ----------
+# priority 是"同批争槽位时谁先做"，顺序由 needs 决定。
+pipeline:
+  name: sales.answer
+  version: 3
+  nodes:
+    - { id: draft,       agent: Analyst,  action: draft,       needs: [], run_if: always, label: 取数出稿, priority: 100 }
+    - { id: verify,      agent: verifier, action: verify,      needs: [draft],            label: 数字回查, priority: 90 }
+    - { id: critique,    agent: Critic,   action: critique,    needs: [draft],            label: 语义质检, priority: 80 }
+    - { id: gate,        agent: gate,     action: gate,        needs: [verify, critique], run_if: always, kind: gate, label: 合议, priority: 70 }
+    - { id: curate,      agent: Curator,  action: curate,      needs: [gate],             label: 成文, priority: 60 }
+    - { id: final_check, agent: verifier, action: final_check, needs: [curate],           label: 成文复检, priority: 60 }
+  edges:
+    - { from: gate, to: draft, when: fail, max_loops: 2, label: 打回重做 }
+
+# ---------- 演示样例 ----------
+samples:
+  - 广东的销售额是多少？
+  - 各省份销售额排名
+  - 2026 年 1 月的销售额是多少？

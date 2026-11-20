@@ -1,0 +1,19 @@
+{"type": "run", "run_id": "20261108T112210-437124", "question": "并行测试", "source": "selftest", "tags": {}, "started_at": "2026-11-08T11:22:10.178", "trace_version": 1}
+{"type": "event", "seq": 1, "at": "2026-11-08T11:22:10.181", "event": "node_begin", "detail": {"node": "start", "agent": "", "priority": 0, "visit": 1, "note": "节点开始执行"}}
+{"type": "event", "seq": 2, "at": "2026-11-08T11:22:10.347", "event": "node_end", "detail": {"node": "start", "agent": "", "note": "节点执行结束（结果如何见 graph_node）"}}
+{"type": "event", "seq": 3, "at": "2026-11-08T11:22:10.350", "event": "graph_node", "detail": {"node": "start", "agent": "", "status": "ok", "visit": 0, "started_ms": 0.0, "ended_ms": 169.0, "duration_ms": 169.0, "note": ""}}
+{"type": "event", "seq": 4, "at": "2026-11-08T11:22:10.356", "event": "graph_wave", "detail": {"nodes": ["left", "right"], "slots": 2, "order": ["left", "right"], "note": "互不依赖，同批进队列；按 priority 取槽位"}}
+{"type": "event", "seq": 5, "at": "2026-11-08T11:22:10.360", "event": "node_begin", "detail": {"node": "left", "agent": "", "priority": 0, "visit": 1, "note": "节点开始执行"}}
+{"type": "event", "seq": 6, "at": "2026-11-08T11:22:10.362", "event": "scheduler_start", "detail": {"job": "left", "priority": 0, "waited_ms": 0.0, "deadline_ms": null, "slot": "1/2", "note": "按优先级取到槽位"}}
+{"type": "event", "seq": 7, "at": "2026-11-08T11:22:10.365", "event": "node_begin", "detail": {"node": "right", "agent": "", "priority": 0, "visit": 1, "note": "节点开始执行"}}
+{"type": "event", "seq": 8, "at": "2026-11-08T11:22:10.368", "event": "scheduler_start", "detail": {"job": "right", "priority": 0, "waited_ms": 6.4, "deadline_ms": null, "slot": "2/2", "note": "按优先级取到槽位"}}
+{"type": "event", "seq": 9, "at": "2026-11-08T11:22:10.513", "event": "node_end", "detail": {"node": "left", "agent": "", "note": "节点执行结束（结果如何见 graph_node）"}}
+{"type": "event", "seq": 10, "at": "2026-11-08T11:22:10.516", "event": "scheduler_done", "detail": {"job": "left", "status": "ok", "duration_ms": 157.3}}
+{"type": "event", "seq": 11, "at": "2026-11-08T11:22:10.518", "event": "node_end", "detail": {"node": "right", "agent": "", "note": "节点执行结束（结果如何见 graph_node）"}}
+{"type": "event", "seq": 12, "at": "2026-11-08T11:22:10.520", "event": "scheduler_done", "detail": {"job": "right", "status": "ok", "duration_ms": 155.5}}
+{"type": "event", "seq": 13, "at": "2026-11-08T11:22:10.523", "event": "graph_node", "detail": {"node": "left", "agent": "", "status": "ok", "visit": 0, "started_ms": 177.3, "ended_ms": 334.6, "duration_ms": 157.3, "note": ""}}
+{"type": "event", "seq": 14, "at": "2026-11-08T11:22:10.525", "event": "graph_node", "detail": {"node": "right", "agent": "", "status": "ok", "visit": 0, "started_ms": 183.7, "ended_ms": 339.2, "duration_ms": 155.5, "note": ""}}
+{"type": "event", "seq": 15, "at": "2026-11-08T11:22:10.528", "event": "node_begin", "detail": {"node": "join", "agent": "", "priority": 0, "visit": 1, "note": "节点开始执行"}}
+{"type": "event", "seq": 16, "at": "2026-11-08T11:22:10.680", "event": "node_end", "detail": {"node": "join", "agent": "", "note": "节点执行结束（结果如何见 graph_node）"}}
+{"type": "event", "seq": 17, "at": "2026-11-08T11:22:10.682", "event": "graph_node", "detail": {"node": "join", "agent": "", "status": "ok", "visit": 0, "started_ms": 346.6, "ended_ms": 501.2, "duration_ms": 154.6, "note": ""}}
+{"type": "run_end", "run_id": "20261108T112210-437124", "status": "ok", "started_at": "2026-11-08T11:22:10.178", "ended_at": "2026-11-08T11:22:10.684", "duration_ms": 506.0, "step_count": 0, "failed_steps": 0, "retry_count": 0, "tokens": {"in": 0, "out": 0}, "error": null}

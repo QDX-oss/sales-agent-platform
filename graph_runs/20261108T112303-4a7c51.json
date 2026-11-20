@@ -1,0 +1,238 @@
+{
+  "run_id": "20261108T112303-4a7c51",
+  "graph": "sales.answer",
+  "version": 3,
+  "updated_at": "2026-11-08T11:23:07.254",
+  "results": {
+    "draft": {
+      "id": "draft",
+      "agent": "Analyst",
+      "action": "draft",
+      "label": "取数出稿",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 0.0,
+      "ended_ms": 2692.8,
+      "duration_ms": 2692.8,
+      "payload": {
+        "chars": 140,
+        "tools": [
+          "rank"
+        ],
+        "strategy": ""
+      }
+    },
+    "verify": {
+      "id": "verify",
+      "agent": "verifier",
+      "action": "verify",
+      "label": "数字回查",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2704.0,
+      "ended_ms": 2725.3,
+      "duration_ms": 21.3,
+      "payload": {
+        "checked": 6,
+        "unsupported": []
+      }
+    },
+    "critique": {
+      "id": "critique",
+      "agent": "Critic",
+      "action": "critique",
+      "label": "语义质检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 2710.6,
+      "ended_ms": 3280.8,
+      "duration_ms": 570.2,
+      "payload": {
+        "high": 0,
+        "issues": [],
+        "unparsed": false
+      }
+    },
+    "gate": {
+      "id": "gate",
+      "agent": "gate",
+      "action": "gate",
+      "label": "合议",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3314.0,
+      "ended_ms": 3318.2,
+      "duration_ms": 4.2,
+      "payload": {
+        "verify": "ok",
+        "critic": "ok"
+      }
+    },
+    "curate": {
+      "id": "curate",
+      "agent": "Curator",
+      "action": "curate",
+      "label": "成文",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 3325.3,
+      "ended_ms": 4188.5,
+      "duration_ms": 863.2,
+      "payload": {
+        "chars": 64
+      }
+    },
+    "final_check": {
+      "id": "final_check",
+      "agent": "verifier",
+      "action": "final_check",
+      "label": "成文复检",
+      "status": "ok",
+      "visit": 0,
+      "started_ms": 4195.9,
+      "ended_ms": 4200.2,
+      "duration_ms": 4.3,
+      "payload": {
+        "checked": 5
+      }
+    }
+  },
+  "visits": {},
+  "loops": {},
+  "order": [
+    "draft",
+    "verify",
+    "critique",
+    "gate",
+    "curate",
+    "final_check"
+  ],
+  "state": {
+    "question": "哪个省销售额最高？",
+    "messages": [
+      {
+        "role": "user",
+        "content": "哪个省销售额最高？"
+      }
+    ],
+    "attempt": 0,
+    "evidence": [
+      1564475.0,
+      1235074.0,
+      1213844.0,
+      1136118.0,
+      1039780.0,
+      997577.0,
+      865720.0,
+      859053.0,
+      780164.0,
+      734981.0
+    ],
+    "draft": "结论：销售额最高的是重庆，约 156.4 万元。\n\n依据（销售额前五省份）：\n1. 重庆 1,564,475\n2. 广东 1,235,074\n3. 辽宁 1,213,844\n4. 湖南 1,136,118\n5. 吉林 1,039,780\n\n如需按月份或渠道进一步拆分，可以告诉我。",
+    "records": [
+      {
+        "name": "rank",
+        "output": "{\"按销售额排名（省份）\": [{\"省份\": \"重庆\", \"销售额\": 1564475}, {\"省份\": \"广东\", \"销售额\": 1235074}, {\"省份\": \"辽宁\", \"销售额\": 1213844}, {\"省份\": \"湖南\", \"销售额\": 1136118}, {\"省份\": \"吉林\", \"销售额\": 1039780}, {\"省份\": \"陕西\", \"销售额\": 997577}, {\"省份\": \"河南\", \"销售额\": 865720}, {\"省份\": \"安徽\", \"销售额\": 859053}, {\"省份\": \"贵州\", \"销售额\": 780164}, {\"省份\": \"山西\", \"销售额\": 734981}]}"
+      }
+    ],
+    "verdict": {
+      "passed": true,
+      "checked": 6,
+      "supported": [
+        {
+          "raw": "156.4 万",
+          "value": 1564000.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1564475.0
+        },
+        {
+          "raw": "1,564,475",
+          "value": 1564475.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1564475.0
+        },
+        {
+          "raw": "1,235,074",
+          "value": 1235074.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1235074.0
+        },
+        {
+          "raw": "1,213,844",
+          "value": 1213844.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1213844.0
+        },
+        {
+          "raw": "1,136,118",
+          "value": 1136118.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1136118.0
+        },
+        {
+          "raw": "1,039,780",
+          "value": 1039780.0,
+          "kind": "number",
+          "ignored": null,
+          "matched": 1039780.0
+        }
+      ],
+      "unsupported": [],
+      "ignored": [
+        {
+          "raw": "1",
+          "value": 1.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "2",
+          "value": 2.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "3",
+          "value": 3.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "4",
+          "value": 4.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        },
+        {
+          "raw": "5",
+          "value": 5.0,
+          "kind": "number",
+          "ignored": "列表序号"
+        }
+      ],
+      "evidence_count": 10,
+      "note": ""
+    },
+    "verify_feedback": "",
+    "critique": {
+      "pass": true,
+      "issues": [],
+      "fix": "",
+      "high_count": 0,
+      "unparsed": false,
+      "raw": "{\"pass\": true, \"issues\": [], \"fix\": \"\"}"
+    },
+    "passed": true,
+    "diagnoses": [],
+    "retry_block": "",
+    "handoff": null,
+    "curated_text": "销售额最高的是重庆，约156.4万元。其后依次为广东123.5万元、辽宁121.4万元、湖南113.6万元、吉林104.0万元。",
+    "final": "销售额最高的是重庆，约156.4万元。其后依次为广东123.5万元、辽宁121.4万元、湖南113.6万元、吉林104.0万元。",
+    "curated": true
+  }
+}
